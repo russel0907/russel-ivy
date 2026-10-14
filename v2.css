@@ -109,16 +109,24 @@ a, .amp, .mag, .mar, .inv-kicker, .seal-hint,
 .scene-bg-7 .rose-motif{ width:min(84vw,520px); left:50%; bottom:4vh; transform:translateX(-50%); color:rgba(245,239,227,.52); }
 .scene-bg-8 .rose-motif{ width:min(96vw,600px); left:50%; bottom:1vh; transform:translateX(-50%); color:rgba(245,239,227,.56); }
 
-/* Shared portrait background with a soft overlay for readable text. */
+/* Shared intro background; later scenes use their own portrait images. */
 .scene-backgrounds{
-  inset:-12px;
+  inset:0;
   background:linear-gradient(rgba(28,10,18,.22),rgba(28,10,18,.38)),
     url("images/bg.png") center center / cover no-repeat;
   background-color:#3d1220;
-  filter:blur(1px);
 }
-.stage[data-scene="0"] .scene-backgrounds{ filter:none; }
-.scene-bg,.stage .vignette{ display:none; }
+.scene-bg{ display:block; }
+.stage .vignette{ display:none; }
+.scene-bg-1{ background:linear-gradient(rgba(28,10,18,.22),rgba(28,10,18,.38)),url("images/bg-2.png") center / cover no-repeat; }
+.scene-bg-2{ background:linear-gradient(rgba(28,10,18,.22),rgba(28,10,18,.38)),url("images/bg-3.png") center / cover no-repeat; }
+.scene-bg-3{ background:linear-gradient(rgba(28,10,18,.22),rgba(28,10,18,.38)),url("images/bg-4.png") center / cover no-repeat; }
+.scene-bg-4{ background:linear-gradient(rgba(28,10,18,.22),rgba(28,10,18,.38)),url("images/bg-5.png") center / cover no-repeat; }
+.scene-bg-5{ background:linear-gradient(rgba(28,10,18,.22),rgba(28,10,18,.38)),url("images/bg-2.png") center / cover no-repeat; }
+.scene-bg-6{ background:linear-gradient(rgba(28,10,18,.22),rgba(28,10,18,.38)),url("images/bg-3.png") center / cover no-repeat; }
+.scene-bg-7{ background:linear-gradient(rgba(28,10,18,.22),rgba(28,10,18,.38)),url("images/bg-4.png") center / cover no-repeat; }
+.scene-bg-0{ background:transparent; }
+.rose-motif{ display:none; }
 .stage .vignette{ position:absolute; inset:0; pointer-events:none; z-index:4;
   background:radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(10,6,16,.55) 100%); }
 /* echter 3D-Ring (Three.js) — Body-Ebene, über der Kulisse, hinter den Karten */
@@ -253,7 +261,14 @@ html:not(.js) #loader{ display:none; }   /* ohne JS keinen Loader */
 .station.intro{ position:relative; text-align:center; align-items:flex-start; padding-top:clamp(48px,7svh,90px); padding-bottom:80px; }
 .intro-inner{ text-shadow:0 4px 24px rgba(0,0,0,.55); }
 .title.big-center{ font-size:clamp(3.2rem,18vw,6.4rem); }
+.station.intro .title{ animation:titleFloat 5s ease-in-out infinite; }
+@keyframes titleFloat{
+  0%,100%{ transform:translateY(0) rotate(-1deg); }
+  50%{ transform:translateY(-10px) rotate(1deg); }
+}
+@media (prefers-reduced-motion:reduce){ .station.intro .title,.station.intro .intro-date{ animation:none; } }
 .intro-date{ font-family:"Dancing Script", cursive; font-size:1.8rem; color:var(--matcha); margin-top:.7rem; }
+.station.intro .intro-date{ animation:displayFloat 4.5s ease-in-out infinite; }
 .engagement-day{ position:absolute; bottom:calc(32px + env(safe-area-inset-bottom,0px)); left:20px; right:20px; font-family:"Dancing Script", cursive; font-size:clamp(2rem,8vw,3rem); font-weight:700; color:#fff; text-shadow:0 2px 12px rgba(28,10,18,.5); }
 .station.intro .scrollcue{ margin-top:1.5rem; }
 
@@ -283,7 +298,11 @@ html:not(.js) #loader{ display:none; }   /* ohne JS keinen Loader */
 .title{ font-family:"Dancing Script", cursive; font-size:clamp(3rem,17vw,5.6rem); line-height:.94; font-weight:700; text-transform:none; text-shadow:0 6px 30px rgba(0,0,0,.45); }
 .title small{ font-family:var(--hand); font-size:.18em; color:var(--mar); text-transform:none; vertical-align:super; }
 .statement{ font-family:"Dancing Script", cursive; font-size:clamp(2.6rem,12vw,4.4rem); line-height:1.08; font-weight:700; text-transform:none; }
-.display{ font-family:"Dancing Script", cursive; font-size:clamp(2.4rem,11vw,4rem); line-height:1.08; font-weight:700; text-transform:none; }
+.display{ font-family:"Dancing Script", cursive; font-size:clamp(2.4rem,11vw,4rem); line-height:1.08; font-weight:700; text-transform:none;
+  animation:displayFloat 4.5s ease-in-out infinite; }
+.statement{ animation:displayFloat 4.5s ease-in-out infinite; }
+@keyframes displayFloat{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-7px); } }
+@media (prefers-reduced-motion:reduce){ .display,.statement{ animation:none; } }
 .heading-white{ color:#fff; }
 /* Riesen-Überschriften dürfen lange Wörter umbrechen statt seitlich rauszuragen */
 .title, .statement, .display, .big-center, .flavor-text p, .site-footer .big{ overflow-wrap:break-word; }
@@ -395,6 +414,7 @@ html:not(.js) #loader{ display:none; }   /* ohne JS keinen Loader */
   background:linear-gradient(180deg,transparent,#1a0a11 40%); }
 .site-footer .big{ font-family:var(--disp); font-size:clamp(2.4rem,14vw,4.5rem); text-transform:uppercase; line-height:.9; }
 .site-footer p{ opacity:.7; margin-top:.8rem; font-size:.88rem; }
+.site-footer .intro-date{ color:#fff !important; }
 
 /* Konfetti */
 .confetti{ position:fixed; inset:0; z-index:30; pointer-events:none; display:none; }
