@@ -3,15 +3,15 @@
    Scroll-Scrub-Video (Platzhalter) + Pop-up-Stationen.
    Hochformat zuerst. Warmes Abendlicht, kein Beetlejuice.
    ========================================================= */
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;900&family=Caveat:wght@600;700&family=Great+Vibes&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800&family=Caveat:wght@600;700&family=Great+Vibes&display=swap');
 
 :root{
   --cream:#f5efe3; --cream2:#e7dcc8; --ink:#1c0a12;
   --matcha:#a3bf7d; --ember:#c65a3c; --terra:#b0574a;
   --sage:#a3bf7d; --mag:#7a1f3d; --mar:#a3bf7d; --forest:#3d1220;  /* Burgundy · Cream · Matcha */
   --glass:rgba(28,10,18,.32); --glass-line:rgba(245,239,227,.18);
-  --disp:"Anton", Impact, sans-serif;
-  --body:"Archivo", -apple-system, "Segoe UI", sans-serif;
+  --disp:"Baloo 2", "Arial Rounded MT Bold", sans-serif;
+  --body:"Nunito", -apple-system, "Segoe UI", sans-serif;
   --hand:"Caveat", cursive;
   --script:"Great Vibes", "Snell Roundhand", cursive;
 }
