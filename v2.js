@@ -14,8 +14,8 @@ try{ if(/reset|neu|test|voll|fullhd|(^|#)hd/i.test(location.hash)) localStorage.
 /* Entdecker-Zähler „X/8": Scroll-Stationen zählen beim Ansehen,
    die 2 Unterseiten (unterkunft, fotos) zählen beim BESUCHEN (markiert sub.js
    in denselben localStorage-Key). So sind 8/8 = ganze Reise + beide Unterseiten. */
-const TASKS = ["start","cincin","programme","location","setup","attire","food","rsvp"];
-const VIEW_TASKS = new Set(["start","cincin","programme","location","setup","attire","food","rsvp"]);
+const TASKS = ["start","cincin","programme","location","attire","food","rsvp"];
+const VIEW_TASKS = new Set(TASKS);
 const STORE_KEY = "cw_progress_v2";
 
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -238,7 +238,7 @@ function setupStageLegacy(){
 function setupStage(){
   const stage=document.getElementById("stage"); if(!stage) return;
   const selectors=['[data-station="0"]','[data-station="1"]','[data-station="2"]',
-    '[data-station="3"]','[data-station="4"]','[data-station="5"]','[data-station="6"]',
+    '[data-station="3"]','[data-station="5"]','[data-station="6"]',
     '[data-station="7"]','[data-station="ziel"]'];
   let anchors=[];
   function buildAnchors(){
@@ -297,14 +297,14 @@ function initLoader(){
   // Tor schon in dieser Sitzung gesehen + freigeschaltet? (z.B. zurück von einer Unterseite)
   // Ring lies in the cache → skip the envelope when returning in this session.
   try{
-    if(sessionStorage.getItem("cw_loader_seen")==="1" && localStorage.getItem("cw_gate_ok_v1")==="1"){
+    if(false){ // Every visit waits for the user to open the invitation.
       document.documentElement.classList.remove("loading"); loader.style.display="none";
       window.dispatchEvent(new Event("cw-reveal")); return;
     }
   }catch(e){}
   const ringEl=document.querySelector(".seal-ring");   // setzt --thread, beide Ellipsen erben es
   const pctEl=document.getElementById("loaderPct");
-  const started=Date.now(); let revealed=false;
+  const started=Date.now(); let revealed=false, readyToOpen=false;
 
   // ---- Passwort-Gate direkt im Siegel ----
   // PORTFOLIO-DEMO: Tor automatisch entsperrt — die Umschlag-Öffnungs-Animation
@@ -322,6 +322,13 @@ function initLoader(){
     if(openBtn) openBtn.hidden=!locked;
   }
   if(seal){
+    seal.setAttribute("role","button");
+    seal.setAttribute("tabindex","0");
+    seal.setAttribute("aria-label","Buka jemputan");
+    seal.setAttribute("aria-disabled","true");
+    seal.addEventListener("keydown",ev=>{
+      if(ev.key==="Enter" || ev.key===" "){ ev.preventDefault(); if(readyToOpen) reveal(); }
+    });
     seal.classList.add(authed ? "authed" : "locked");   // C&W vs. Passwort-Eingabe
     if(!authed) setTimeout(()=>{ try{ passInp.focus(); }catch(e){} }, 250);
   }
@@ -336,8 +343,13 @@ function initLoader(){
     // CSS scenes are ready immediately; wait only for the ring, with a safety exit.
     return (window.__ringReady && window.__stageReady) || elapsed>15000;
   }
+  function playInvitationMusic(){
+    const music=document.getElementById("invitationMusic");
+    if(music) music.play().catch(()=>{}); // Retry from the seal click if autoplay is blocked.
+  }
   function reveal(){
     if(revealed) return; revealed=true;
+    playInvitationMusic();
     try{ sessionStorage.setItem("cw_loader_seen","1"); }catch(e){}   // beim nächsten Zurück nicht wieder zeigen
     setProgress(100);                                  // Rand glüht ganz herum, bevor die Türen aufgehen
     loader.classList.add("opening");                   // Türen klappen nach links & rechts auf
@@ -366,6 +378,7 @@ function initLoader(){
   if(openBtn)  openBtn.addEventListener("click", tryUnlock);
   // Klick aufs Siegel öffnet ebenfalls — außer man tippt gerade ins Eingabefeld
   if(seal) seal.addEventListener("click", function(ev){
+    if(readyToOpen){ reveal(); return; }
     if(!seal.classList.contains("locked")) return;
     if(ev.target===passInp || (ev.target.closest && ev.target.closest(".seal-pass"))) return;
     tryUnlock();
@@ -373,10 +386,17 @@ function initLoader(){
 
   (function tick(){
     const elapsed=Date.now()-started;
-    // Short, deliberate envelope opening; no media download is required.
-    const shown = Math.min(elapsed/900*90, 90);
-    setProgress(Math.min(99, shown));        // 100 % setzt reveal()
-    if(barReady() && passwordOK){ reveal(); return; }
+    // Count up for three seconds, then wait for the user's seal click.
+    const shown = Math.min(elapsed/3000*100, 99);
+    setProgress(shown);
+    if(elapsed>=3000 && barReady() && passwordOK){
+      setProgress(100);
+      readyToOpen=true;
+      playInvitationMusic();
+      loader.classList.add("ready");
+      if(seal){ seal.setAttribute("aria-disabled","false"); seal.style.cursor="pointer"; }
+      return;
+    }
     requestAnimationFrame(tick);
   })();
 }

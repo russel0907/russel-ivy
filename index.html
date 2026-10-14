@@ -27,9 +27,10 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Russel &amp; Ivy · Pertunangan" />
   <meta name="twitter:image" content="https://wanjadoering.de/projekte/ring-reise/demo-en/bilder/og-preview.jpg?v=6" />
-  <link rel="stylesheet" href="v2.css?v=19" />
+  <link rel="stylesheet" href="v2.css?v=37" />
 </head>
 <body>
+  <audio id="invitationMusic" src="songs/bruno-mars-risk-it-all.mp3" preload="auto" loop></audio>
 
   <!-- ============ LOADER: green invitation gate with wax seal 💌 ============ -->
   <div id="loader">
@@ -51,7 +52,7 @@
           <span class="seal-pct" id="loaderPct">0%</span>
         </div>
       </div>
-      <p class="inv-date">12 · 12 · 2026</p>
+      <p class="inv-date">Welcome</p>
     </div>
   </div>
 
@@ -79,15 +80,15 @@
     <section class="station intro" data-station="0" data-task="start" data-side="center">
       <div class="intro-inner">
         <h1 class="title big-center">Russel<br><span class="amp">&amp;</span> Ivy</h1>
-        <p class="intro-date">12 · 12 · 2026</p>
-        <div class="scrollcue">↓ slide ke bawah</div>
+        <p class="intro-date">12.12.2026</p>
       </div>
+      <p class="engagement-day">Engagement Day</p>
     </section>
 
     <!-- 1 · RING & BLESSING -->
     <section class="station" data-station="1" data-task="cincin" data-side="left">
       <div class="card">
-        <h2 class="statement">Dengan cincin ini,<br>perjalanan <span class="mar">kita</span> bermula</h2>
+        <h2 class="statement">Dengan cincin ini,<br>perjalanan kita bermula</h2>
         <p class="lead">Pertunangan bertema Burgundy &amp; Cream — satu ikatan yang disatukan
           dalam kasih, doa dan berkat Tuhan.</p>
         <p class="sub">"Sekarang tinggal tiga perkara ini: iman, pengharapan dan kasih —
@@ -100,14 +101,15 @@
     <section class="station" data-station="2" data-task="programme" data-side="right">
       <div class="card">
         <h2 class="display">Atur Cara</h2>
+        <p class="lead">2:00 – 5:00 PTG</p>
         <ul class="timeline">
-          <li><span class="time">2:00 PTG</span><span class="what"><strong>Ketibaan</strong><span>sambutan tetamu &amp; keluarga</span></span></li>
-          <li><span class="time">2:15 PTG</span><span class="what"><strong>Ucapan alu-aluan</strong><span>ucapan pembukaan</span></span></li>
-          <li><span class="time">2:30 PTG</span><span class="what"><strong>Doa &amp; berkat</strong><span>doa pembukaan &amp; restu keluarga</span></span></li>
-          <li><span class="time">3:00 PTG</span><span class="what"><strong>Pertukaran cincin</strong><span>upacara bertukar cincin pertunangan</span></span></li>
-          <li><span class="time">3:15 PTG</span><span class="what"><strong>Sesi bergambar</strong><span>gambar bersama keluarga</span></span></li>
-          <li><span class="time">3:30 PTG</span><span class="what"><strong>Jamuan</strong><span>jamuan makan &amp; minum</span></span></li>
-          <li><span class="time">4:30 PTG</span><span class="what"><strong>Bersurai</strong><span>tetamu pulang</span></span></li>
+          <li><span class="time">2:00 PTG</span><span class="what"><strong>Ketibaan</strong></span></li>
+          <li><span class="time">2:30 PTG</span><span class="what"><strong>Ucapan alu-aluan</strong></span></li>
+          <li><span class="time">2:45 PTG</span><span class="what"><strong>Doa &amp; berkat</strong></span></li>
+          <li><span class="time">3:15 PTG</span><span class="what"><strong>Pertukaran cincin</strong></span></li>
+          <li><span class="time">3:30 PTG</span><span class="what"><strong>Sesi bergambar</strong></span></li>
+          <li><span class="time">3:45 PTG</span><span class="what"><strong>Jamuan</strong></span></li>
+          <li><span class="time">4:45 PTG</span><span class="what"><strong>Sesi Santai</strong></span></li>
         </ul>
       </div>
     </section>
@@ -116,22 +118,11 @@
     <section class="station" data-station="3" data-task="location" data-side="left">
       <div class="card">
         <h2 class="display">Cara ke sana</h2>
-        <p class="address">Rumah Pihak<br>Perempuan</p>
+        <p class="address">Kg Hobut, Matunggong</p>
         <p class="lead">Majlis diadakan di rumah pihak perempuan. Perhatikan papan tanda nama,
           papan "Happy Engagement" dan papan arah sepanjang jalan — ia akan membawa anda masuk.</p>
-        <a class="btn maps" href="https://www.google.com/maps/search/?api=1&amp;query=Rumah+Pihak+Perempuan" target="_blank" rel="noopener">Google Maps →</a>
-      </div>
-    </section>
-
-    <!-- 4 · TENT & SEATING -->
-    <section class="station" data-station="4" data-task="setup" data-side="right">
-      <div class="card">
-        <h2 class="display">Susunan &amp;<br><span class="mar">khemah</span></h2>
-        <div class="lodging">
-          <div class="lodge"><strong>Khemah / kanopi</strong><span>teduhan untuk majlis &amp; tetamu</span></div>
-          <div class="lodge"><strong>Meja &amp; kerusi</strong><span>susunan selesa untuk kedua-dua keluarga</span></div>
-          <div class="lodge"><strong>Parkir tetamu</strong><span>ruang khas berhampiran rumah</span></div>
-        </div>
+        <img class="location-image" src="images/location.png" alt="Lokasi majlis di Kg Hobut, Matunggong" loading="lazy" decoding="async" />
+        <a class="btn maps" href="https://maps.app.goo.gl/cZoByjizJoyjB2Y67" target="_blank" rel="noopener">Google Maps →</a>
       </div>
     </section>
 
@@ -140,9 +131,9 @@
       <div class="card">
         <h2 class="display">Pakaian</h2>
         <div class="lodging">
-          <div class="lodge"><strong>Keluarga pihak perempuan</strong><span>warna matcha</span></div>
-          <div class="lodge"><strong>Keluarga pihak lelaki</strong><span>warna cream</span></div>
-          <div class="lodge"><strong>Pasangan tunang</strong><span>warna burgundy sahaja</span></div>
+          <div class="lodge"><strong>Keluarga Pihak Perempuan</strong><span class="attire-color"><i class="color-swatch swatch-matcha" aria-hidden="true"></i>Warna Matcha</span></div>
+          <div class="lodge"><strong>Keluarga Pihak Lelaki</strong><span class="attire-color"><i class="color-swatch swatch-cream" aria-hidden="true"></i>Warna Cream</span></div>
+          <div class="lodge"><strong>Pasangan Tunang</strong><span class="attire-color"><i class="color-swatch swatch-burgundy" aria-hidden="true"></i>Warna Burgundy</span></div>
         </div>
       </div>
     </section>
@@ -150,7 +141,7 @@
     <!-- 6 · FOOD & DRINK -->
     <section class="station" data-station="6" data-task="food" data-side="right">
       <div class="card">
-        <h2 class="display">Makanan &amp;<br><span class="mar">minuman</span></h2>
+        <h2 class="display heading-white">Makanan &amp;<br>minuman</h2>
         <div class="lodging">
           <div class="lodge"><strong>Katering</strong><span>hidangan buffet untuk semua tetamu</span></div>
           <div class="lodge"><strong>Meja buffet</strong><span>dihidangkan secara santai</span></div>
@@ -163,16 +154,15 @@
     <!-- 7 · RSVP -->
     <section class="station" data-station="7" data-task="rsvp" data-side="center">
       <div class="card finale-card">
-        <h2 class="statement">Sudikah<br><span class="mar">hadir?</span></h2>
+        <h2 class="statement heading-white">Sudikah<br>hadir?</h2>
         <p class="lead">Sila maklumkan kehadiran supaya kami dapat merancang makanan dan tempat duduk.</p>
         <form class="mini-form" data-sheet="rsvp" data-success="Terima kasih! Jawapan anda diterima. 🎉" data-final>
           <div class="field"><label>Nama anda</label><input type="text" name="name" required placeholder="Siapa anda?" /></div>
           <div class="radio-row">
-            <span class="radio-pill"><input type="radio" id="ja" name="zusage" value="Hadir" required><label for="ja">Saya akan hadir! 🎉</label></span>
+            <span class="radio-pill"><input type="radio" id="ja" name="zusage" value="Hadir" required><label for="ja">Saya akan hadir!</label></span>
             <span class="radio-pill"><input type="radio" id="nein" name="zusage" value="Tidak hadir"><label for="nein">Tak dapat hadir</label></span>
           </div>
           <div class="field"><label>Berapa orang?</label><input type="number" name="personen" min="0" value="1" /></div>
-          <div class="field"><label>E-mel <span class="opt">(untuk sebarang kemas kini)</span></label><input type="email" name="email" placeholder="supaya kami boleh hubungi anda" /></div>
           <button class="btn pink big" type="submit">Hantar</button>
           <p class="form-status"></p>
         </form>
@@ -182,7 +172,7 @@
     <!-- 🎉 UCAPAN TERIMA KASIH -->
     <section class="station" data-station="ziel" data-side="center">
       <div class="card goal-card" id="goalCard">
-        <h2 class="display">Ucapan<br><span class="mar">terima kasih</span></h2>
+        <h2 class="display heading-white">Ucapan</h2>
         <p class="lead">Terima kasih kepada semua yang sudi hadir ke majlis pertunangan kami,
           serta yang mendoakan kami dari dekat mahupun jauh.</p>
         <p class="sub">Kehadiran, doa dan berkat anda amat kami hargai. Semoga ikatan kasih
@@ -193,7 +183,7 @@
   </main>
 
   <footer class="site-footer">
-    <p>12 Disember 2026</p>
+    <p>12.12.2026</p>
   </footer>
 
   <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
@@ -203,7 +193,7 @@
   <script src="vendor/GLTFLoader.js"></script>
   <script src="ringdata.js"></script>
   <script src="scenedata.js?v=2"></script>
-  <script src="v2.js?v=31"></script>
+  <script src="v2.js?v=32"></script>
   <script src="ring3d.js?v=15"></script>
 </body>
 </html>

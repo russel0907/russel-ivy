@@ -29,9 +29,9 @@ a{ color:var(--matcha); }
 .amp{ color:var(--matcha); } .mag{ color:var(--matcha); } .mar{ color:var(--mar); }   /* Matcha accent */
 
 /* Burgundy text accents; retain the existing button fill colors. */
-a, .amp, .mag, .mar, .inv-kicker, .inv-date, .seal-hint,
+a, .amp, .mag, .mar, .inv-kicker, .seal-hint,
 .intro-date, .eyebrow, .title small, .scrollcue, .bg-cue,
-.timeline .time, .address, .goal-card .secret, .faq summary::after{
+.faq summary::after{
   color:#7a1f3d !important;
 }
 
@@ -117,6 +117,7 @@ a, .amp, .mag, .mar, .inv-kicker, .inv-date, .seal-hint,
   background-color:#3d1220;
   filter:blur(1px);
 }
+.stage[data-scene="0"] .scene-backgrounds{ filter:none; }
 .scene-bg,.stage .vignette{ display:none; }
 .stage .vignette{ position:absolute; inset:0; pointer-events:none; z-index:4;
   background:radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(10,6,16,.55) 100%); }
@@ -152,7 +153,7 @@ html:not(.js) #loader{ display:none; }   /* ohne JS keinen Loader */
   transition:opacity .4s ease, transform .55s ease; }
 #loader.opening .invite{ opacity:0; transform:scale(.82); }
 .inv-kicker{ font-family:var(--hand); font-size:1.85rem; color:var(--matcha); text-shadow:0 2px 8px rgba(0,0,0,.35); }
-.inv-date{ font-family:var(--body); font-size:.95rem; letter-spacing:.3em; color:var(--matcha); padding-left:.3em; opacity:.92; }
+.inv-date{ font-family:"Dancing Script", cursive; font-size:1.8rem; font-weight:700; color:#fff; }
 
 /* Wachssiegel — gold, Monogramm wie in Wachs gepresst (embossed) */
 .inv-seal{ position:relative; width:184px; height:180px;
@@ -166,7 +167,7 @@ html:not(.js) #loader{ display:none; }   /* ohne JS keinen Loader */
   text-shadow:0 1px 1px rgba(255,220,210,.4), 0 -1px 1px rgba(60,6,16,.7); }   /* in Wachs gepresst */
 .inv-seal::before{ content:""; position:absolute; inset:12px; border-radius:inherit; pointer-events:none;
   box-shadow:inset 0 2px 4px rgba(40,4,14,.6), inset 0 -2px 4px rgba(255,190,200,.4); }   /* Stempel-Rand */
-.seal-mono{ font-family:var(--script); font-size:3.3rem; line-height:1; }
+.seal-mono{ font-family:"Dancing Script", cursive; font-weight:700; font-size:3.3rem; line-height:1; letter-spacing:-.04em; }
 .seal-pct{ font-family:var(--body); font-size:.6rem; letter-spacing:.16em; padding-left:.16em; opacity:.78;
   text-shadow:0 1px 1px rgba(60,6,16,.5); }   /* small load % under the R&I monogram */
 
@@ -210,9 +211,11 @@ html:not(.js) #loader{ display:none; }   /* ohne JS keinen Loader */
 /* Blur läuft IM SVG (feGaussianBlur) — drop-shadow auf SVG-Strichen blurrt auf Mobile Safari oft nicht */
 .seal-ring ellipse{ fill:none; stroke-linecap:round;
   stroke-dasharray:100; stroke-dashoffset:var(--thread,100);
-  transition:stroke-dashoffset .14s linear; }
+  transition:stroke-dashoffset .14s linear, stroke .5s ease; }
 .seal-ring .ring-glow{ stroke:#ff2a30; stroke-width:22; }   /* dicke, geblurrte Glut */
 .seal-ring .ring-core{ stroke:#ff7176; stroke-width:7; }    /* heller Kern für Definition */
+#loader.ready .ring-glow{ stroke:#dca12d; }
+#loader.ready .ring-core{ stroke:#ffe39a; }
 #loader.opening .seal-ring{ opacity:0; }
 
 @media (max-width:380px){ .inv-seal{ width:142px; height:140px; } .seal-mono{ font-size:2.8rem; } .inv-kicker{ font-size:1.55rem; } }
@@ -247,10 +250,11 @@ html:not(.js) #loader{ display:none; }   /* ohne JS keinen Loader */
 .station[data-side]{ justify-content:center; }
 
 /* Intro: Ring oben (Bühne), Namen ins untere Drittel */
-.station.intro{ text-align:center; align-items:flex-end; padding-bottom:15vh; }
+.station.intro{ position:relative; text-align:center; align-items:flex-start; padding-top:clamp(48px,7svh,90px); padding-bottom:80px; }
 .intro-inner{ text-shadow:0 4px 24px rgba(0,0,0,.55); }
 .title.big-center{ font-size:clamp(3.2rem,18vw,6.4rem); }
-.intro-date{ font-family:var(--hand); font-size:1.5rem; color:var(--matcha); margin-top:.7rem; }
+.intro-date{ font-family:"Dancing Script", cursive; font-size:1.8rem; color:var(--matcha); margin-top:.7rem; }
+.engagement-day{ position:absolute; bottom:calc(32px + env(safe-area-inset-bottom,0px)); left:20px; right:20px; font-family:"Dancing Script", cursive; font-size:clamp(2rem,8vw,3rem); font-weight:700; color:#fff; text-shadow:0 2px 12px rgba(28,10,18,.5); }
 .station.intro .scrollcue{ margin-top:1.5rem; }
 
 /* kein backdrop-filter (mobil teuer) → leichter Verlauf für Lesbarkeit, Szene scheint durch */
@@ -278,8 +282,9 @@ html:not(.js) #loader{ display:none; }   /* ohne JS keinen Loader */
 .eyebrow{ font-family:var(--hand); font-size:1.3rem; color:var(--mar); display:inline-block; transform:rotate(-2deg); margin-bottom:.5rem; }
 .title{ font-family:"Dancing Script", cursive; font-size:clamp(3rem,17vw,5.6rem); line-height:.94; font-weight:700; text-transform:none; text-shadow:0 6px 30px rgba(0,0,0,.45); }
 .title small{ font-family:var(--hand); font-size:.18em; color:var(--mar); text-transform:none; vertical-align:super; }
-.statement{ font-family:var(--disp); font-size:clamp(2.6rem,12vw,4.4rem); line-height:.98; font-weight:700; text-transform:none; }
-.display{ font-family:var(--disp); font-size:clamp(2.4rem,11vw,4rem); line-height:.96; font-weight:700; text-transform:none; }
+.statement{ font-family:"Dancing Script", cursive; font-size:clamp(2.6rem,12vw,4.4rem); line-height:1.08; font-weight:700; text-transform:none; }
+.display{ font-family:"Dancing Script", cursive; font-size:clamp(2.4rem,11vw,4rem); line-height:1.08; font-weight:700; text-transform:none; }
+.heading-white{ color:#fff; }
 /* Riesen-Überschriften dürfen lange Wörter umbrechen statt seitlich rauszuragen */
 .title, .statement, .display, .big-center, .flavor-text p, .site-footer .big{ overflow-wrap:break-word; }
 .lead{ margin-top:1rem; opacity:.92; }
@@ -306,16 +311,23 @@ html:not(.js) #loader{ display:none; }   /* ohne JS keinen Loader */
 /* Timeline */
 .timeline{ list-style:none; margin-top:1rem; }
 .timeline li{ display:flex; gap:16px; padding:14px 0; border-bottom:1px solid rgba(245,239,227,.14); }
-.timeline .time{ font-family:var(--disp); font-size:1.3rem; color:var(--mar); min-width:84px; }
+.timeline .time{ font-family:var(--disp); font-size:1.3rem; color:#fff; flex:0 0 auto; min-width:100px; white-space:nowrap; }
+.timeline .what{ min-width:0; overflow-wrap:break-word; }
 .timeline .what strong{ display:block; font-family:var(--disp); font-size:1.15rem; text-transform:uppercase; letter-spacing:.01em; }
 .timeline .what span{ opacity:.72; font-size:.9rem; }
 
 /* Adresse + Lodging */
-.address{ font-family:var(--disp); font-size:1.6rem; line-height:1.1; margin:.8rem 0; color:var(--matcha); text-transform:uppercase; }
+.address{ font-family:var(--disp); font-size:1.6rem; line-height:1.1; margin:.8rem 0; color:#fff; text-transform:uppercase; }
+.location-image{ width:100%; height:auto; margin-top:1.4rem; border-radius:12px; border:1px solid var(--glass-line); }
 .lodging{ display:grid; gap:10px; margin:1rem 0 1.2rem; }
 .lodge{ background:rgba(245,239,227,.07); border:1px solid var(--glass-line); border-radius:12px; padding:12px 14px; }
 .lodge strong{ display:block; }
 .lodge span{ font-size:.86rem; opacity:.72; }
+.lodge .attire-color{ display:flex; align-items:center; gap:9px; margin-top:6px; opacity:1; }
+.color-swatch{ display:inline-block; flex:0 0 44px; width:44px; height:44px; border-radius:50%; border:1px solid rgba(255,255,255,.55); }
+.swatch-matcha{ background:#a3bf7d; }
+.swatch-cream{ background:#f5efe3; }
+.swatch-burgundy{ background:#7a1f3d; }
 
 /* Buttons */
 .btn{ --bg:var(--matcha); --fg:#2a1c08; display:inline-flex; align-items:center; gap:.5em; background:var(--bg); color:var(--fg);
@@ -345,7 +357,7 @@ html:not(.js) #loader{ display:none; }   /* ohne JS keinen Loader */
 .radio-row{ display:flex; gap:10px; flex-wrap:nowrap; margin-bottom:14px; }
 .radio-pill{ flex:1; min-width:0; }
 .radio-pill input{ position:absolute; opacity:0; }
-.radio-pill label{ display:block; text-align:center; padding:11px 14px; border:1px solid var(--glass-line); border-radius:999px; cursor:pointer; font-weight:700; white-space:nowrap; }
+.radio-pill label{ display:flex; align-items:center; justify-content:center; height:100%; min-height:48px; text-align:center; padding:11px 10px; border:1px solid var(--glass-line); border-radius:24px; cursor:pointer; font-weight:700; font-size:.9rem; line-height:1.35; white-space:normal; overflow-wrap:anywhere; }
 .radio-pill input:checked + label{ background:var(--mag); color:#fff; border-color:var(--mag); }
 .form-status{ margin-top:12px; padding:11px 14px; border-radius:10px; font-weight:700; display:none; }
 .form-status.show{ display:block; }
@@ -364,7 +376,7 @@ html:not(.js) #loader{ display:none; }   /* ohne JS keinen Loader */
   color:#fff; text-shadow:0 4px 24px rgba(0,0,0,.5); opacity:.92; }
 
 /* Goal / FAQ */
-.goal-card .secret{ margin-top:1rem; font-family:var(--hand); font-size:1.3rem; color:var(--matcha); }
+.goal-card .secret{ margin-top:1rem; font-family:var(--hand); font-size:1.3rem; color:#fff; }
 .faq{ border-top:1px solid var(--glass-line); margin-top:6px; }
 .faq summary{ position:relative; cursor:pointer; list-style:none; padding:14px 46px 14px 0; font-family:var(--disp); font-size:1.1rem; text-transform:uppercase; }
 .faq summary::-webkit-details-marker{ display:none; }
