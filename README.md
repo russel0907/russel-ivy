@@ -2,7 +2,7 @@
 
 A scroll-driven, interactive engagement-ceremony microsite adapted from the
 "Ring Journey" demo. Theme: **Burgundy, Cream & Matcha**. Ceremony: **12 December 2026,
-2:00–5:00 PM · the bride's family home**.
+2:00–8:00 PM · the bride's family home**.
 
 Built around scroll-driven storytelling, section-specific CSS background designs,
 and a drag-to-spin 3D ring (Three.js).
