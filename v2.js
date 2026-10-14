@@ -4,7 +4,7 @@
    ========================================================= */
 
 /* ---- später eintragen ---- */
-const SHEET_ENDPOINT = "";          // Google-Apps-Script-URL (leer = Demo-Modus)
+const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbyNxRgT1vJ87enQDoDZbpwGTvOgtcM0CraGphFwF3q7iaZWG2VBRP2-x190aKeEIw/exec";
 const PHOTO_FORM_URL = "";          // Google-Formular für Foto-Upload
 const WEDDING_DATE   = new Date("2026-12-12T14:00:00");
 
@@ -434,8 +434,11 @@ function initForms(){
         if(!SHEET_ENDPOINT){ await new Promise(r=>setTimeout(r,450));
           showStatus(status,"ok",(form.dataset.success||"Tersimpan!")+(toAirtable?"":" (demo, belum disambungkan)"));
         }else{
-          await fetch(SHEET_ENDPOINT,{method:"POST",body:JSON.stringify(data),headers:{"Content-Type":"text/plain;charset=utf-8"}});
-          showStatus(status,"ok",form.dataset.success||"Terima kasih! Jawapan anda diterima.");
+          const response=await fetch(SHEET_ENDPOINT,{method:"POST",body:JSON.stringify(data),headers:{"Content-Type":"text/plain;charset=utf-8"}});
+          if(!response.ok) throw new Error("RSVP request failed");
+          const result=await response.json();
+          if(result.ok!==true) throw new Error(result.error||"RSVP was not saved");
+          showStatus(status,"ok",form.dataset.success||"Maklumat kehadiran anda telah disimpan. Terima kasih!");
         }
         markDone(form.closest("[data-task]")?.dataset.task);
         if(form.hasAttribute("data-final")) celebrate();
