@@ -1,7 +1,6 @@
 /* =========================================================
    Russel & Ivy — Pertunangan · Burgundy · Cream · Matcha
-   Mobil-flüssig: Autoplay-Loop-Video (Hardware) + CSS-Scroll-Tunnel + leichter WebGL-Ring.
-   KEIN Scroll-JS, kein Frame-Decode, kein getImageData → Main-Thread bleibt frei.
+   Lightweight CSS scene changes + CSS-Scroll-Tunnel + WebGL ring.
    ========================================================= */
 
 /* ---- später eintragen ---- */
@@ -9,39 +8,8 @@ const SHEET_ENDPOINT = "";          // Google-Apps-Script-URL (leer = Demo-Modus
 const PHOTO_FORM_URL = "";          // Google-Formular für Foto-Upload
 const WEDDING_DATE   = new Date("2026-12-12T14:00:00");
 
-/* ---- Tunnel-Hintergrund: Scroll-Video (all-keyframe → flüssig auf allen Geräten) ----
-   Hochformat (Handy/schmal) + Querformat (Desktop, Datei kommt noch).
-   Sobald videos/bg-landscape.mp4 existiert: HAS_LANDSCAPE auf true setzen, dann lädt
-   ein breiter Viewport automatisch das Querformat-Video. */
-const HAS_LANDSCAPE = true;
-// Videos liegen lokal im ./videos-Ordner (offline/self-contained). Querformat = Desktop, Hochformat = Handy.
-// Mehrere Auflösungs-Stufen fürs Handy: schwache/alte Geräte dekodieren kleinere Frames flüssiger.
-const R2_BASE = "videos/";
-const R2_FHD_LAND  = R2_BASE+"bg-quer-fhd.mp4";   // Desktop: Querformat FHD
-const R2_HD_PORT   = R2_BASE+"bg-hd.mp4";         // Handy normal: 720×1280
-const R2_LITE_PORT = R2_BASE+"bg-lite.mp4";       // Handy schwach/alt: 540×960 (leichter zu dekodieren)
-const isWide = ()=> innerWidth > innerHeight && innerWidth >= 820;
-// #hd / #reset → eine frühere „zu zäh"-Messung vergessen (Ring + volles Video kommen zurück).
+// #hd / #reset → eine frühere „zu zäh"-Messung für den Ring vergessen.
 try{ if(/reset|neu|test|voll|fullhd|(^|#)hd/i.test(location.hash)) localStorage.removeItem("cw_gpu_weak"); }catch(e){}
-// Welche Stufe? Per #hd / #lite erzwingbar; sonst nach Messung (ring3d) + Verbindung + Geräteleistung.
-function pickTier(){
-  const h=(location.hash||"").toLowerCase();
-  if(/lite|spar/.test(h)) return 'lite';
-  if(/voll|fullhd|#hd/.test(h)) return 'hd';
-  try{ if(localStorage.getItem("cw_gpu_weak")==="1") return 'lite'; }catch(e){}      // vorher als zäh gemessen → leichtes Video
-  const c=navigator.connection||{};
-  if(c.saveData || /\b(slow-2g|2g|3g)\b/.test(c.effectiveType||"")) return 'lite';   // langsame/teure Leitung
-  if(/iPhone|iPad|iPod/.test(navigator.userAgent)) return 'hd';                      // iOS nennt keine Specs, ist aber meist stark
-  const mem=navigator.deviceMemory||4, cores=navigator.hardwareConcurrency||4;
-  if(mem<=4 || cores<=4) return 'lite';            // schwächere/ältere Androids → leichtes Video
-  return 'hd';
-}
-const bgSrc = ()=> (HAS_LANDSCAPE && isWide()) ? R2_FHD_LAND
-                 : (pickTier()==='lite' ? R2_LITE_PORT : R2_HD_PORT);
-// Frame-Verteilung je Video: Hochformat-Clips ungleich lang (121,121,97,97,97,97,121,121),
-// Querformat-Clips alle gleich (8×97) → gleichmäßige Achtel.
-const FRAME_PCT_PORTRAIT  = [0,121,242,339,436,533,630,751,872].map(f=>f/872);
-const FRAME_PCT_LANDSCAPE = [0,1,2,3,4,5,6,7,8].map(f=>f/8);
 
 /* Entdecker-Zähler „X/8": Scroll-Stationen zählen beim Ansehen,
    die 2 Unterseiten (unterkunft, fotos) zählen beim BESUCHEN (markiert sub.js
@@ -93,7 +61,7 @@ function renderCountdown(){
    • Handy/Safari → currentTime-Scrubbing (leicht, mit All-Keyframe-Video butterweich)
    • Desktop      → currentTime ebenfalls (kein WebCodecs → kein RAM-Risiko bei 605 Frames)
    Wir treiben sie selbst per Scroll-Prozent; Ring-Licht liest dasselbe Prozent.    */
-function setupStage(){
+function setupStageLegacy(){
   const stage=document.getElementById("stage"); if(!stage) return;
   const box=document.createElement("div");
   box.className="bg-video";
@@ -264,6 +232,60 @@ function setupStage(){
   startScrolly(streamUrl);
 }
 
+/* ---------- Background: CSS design per section ----------
+   The current station fades in its own background. The interpolated scroll
+   percentage remains available to the 3D ring for its motion and lighting. */
+function setupStage(){
+  const stage=document.getElementById("stage"); if(!stage) return;
+  const selectors=['[data-station="0"]','[data-station="1"]','[data-station="2"]',
+    '[data-station="3"]','[data-station="4"]','[data-station="5"]','[data-station="6"]',
+    '[data-station="7"]','[data-station="ziel"]'];
+  let anchors=[];
+  function buildAnchors(){
+    const sy=scrollY||0;
+    anchors=selectors.map((selector,index)=>{
+      const el=document.querySelector(selector); if(!el) return null;
+      const rect=el.getBoundingClientRect();
+      return {pos:sy+rect.top+rect.height/2-innerHeight/2,pct:index/(selectors.length-1)};
+    }).filter(Boolean);
+  }
+  let queued=false, lastVP=-1, activeScene=-1;
+  function update(){
+    queued=false;
+    if(!anchors.length) buildAnchors();
+    if(!anchors.length) return;
+    const scroll=scrollY||0;
+    let pct;
+    if(scroll<=anchors[0].pos) pct=anchors[0].pct;
+    else if(scroll>=anchors[anchors.length-1].pos) pct=anchors[anchors.length-1].pct;
+    else for(let i=0;i<anchors.length-1;i++){
+      const a=anchors[i], b=anchors[i+1];
+      if(scroll>=a.pos && scroll<=b.pos){ pct=a.pct+(scroll-a.pos)/Math.max(1,b.pos-a.pos)*(b.pct-a.pct); break; }
+    }
+    if(pct==null) pct=lastVP<0?0:lastVP;
+    window.__scrollProg=pct;
+    const nextScene=Math.max(0,Math.min(anchors.length-1,Math.round(pct*(anchors.length-1))));
+    if(nextScene!==activeScene){ activeScene=nextScene; stage.dataset.scene=String(nextScene); }
+    lastVP=pct;
+  }
+  function onScroll(){ if(!queued){ queued=true; requestAnimationFrame(update); } }
+  let lastWidth=innerWidth;
+  function onResize(){ if(innerWidth!==lastWidth){ lastWidth=innerWidth; buildAnchors(); onScroll(); } }
+  addEventListener("scroll",onScroll,{passive:true});
+  addEventListener("resize",onResize,{passive:true});
+  buildAnchors(); update();
+  let lastHeight=0;
+  function reanchor(){
+    const height=document.documentElement.scrollHeight;
+    if(height===lastHeight) return;
+    lastHeight=height; buildAnchors(); update();
+  }
+  if(document.readyState!=="complete") addEventListener("load",reanchor);
+  if("ResizeObserver" in window){ try{ new ResizeObserver(reanchor).observe(document.body); }catch(e){} }
+  addEventListener("cw-reveal",()=>{ buildAnchors(); update(); [120,400,900].forEach(ms=>setTimeout(reanchor,ms)); });
+  window.__stageReady=true;
+}
+
 /* ---------- Ladescreen: Ring dreht auf Weiß, % zählt hoch, dann Reveal ---------- */
 function initLoader(){
   const loader=document.getElementById("loader"); if(!loader){ window.dispatchEvent(new Event("cw-reveal")); return; }
@@ -273,7 +295,7 @@ function initLoader(){
     try{ localStorage.removeItem("cw_gate_ok_v1"); sessionStorage.removeItem("cw_loader_seen"); }catch(e){}
   }
   // Tor schon in dieser Sitzung gesehen + freigeschaltet? (z.B. zurück von einer Unterseite)
-  // Video & Ring liegen im Cache → direkt zur Seite, kein erneuter Ladescreen.
+  // Ring lies in the cache → skip the envelope when returning in this session.
   try{
     if(sessionStorage.getItem("cw_loader_seen")==="1" && localStorage.getItem("cw_gate_ok_v1")==="1"){
       document.documentElement.classList.remove("loading"); loader.style.display="none";
@@ -283,14 +305,13 @@ function initLoader(){
   const ringEl=document.querySelector(".seal-ring");   // setzt --thread, beide Ellipsen erben es
   const pctEl=document.getElementById("loaderPct");
   const started=Date.now(); let revealed=false;
-  const FAKE_MS=4500;   // „gefakter" Verlauf über 4,5 s (kein 60%-Hänger)
 
   // ---- Passwort-Gate direkt im Siegel ----
   // PORTFOLIO-DEMO: Tor automatisch entsperrt — die Umschlag-Öffnungs-Animation
   // bleibt erhalten, aber es wird kein Passwort abgefragt (kein privates Gate).
   const GATE_KEY="cw_gate_ok_v1", GATE_PASS="demo";
   let authed=true;           // Demo: immer freigeschaltet (kein Passwort-Eingabefeld)
-  let passwordOK = true;     // Demo: Türen öffnen automatisch, sobald das Video bereit ist
+  let passwordOK = true;     // Demo: Türen öffnen automatisch, sobald die Bühne bereit ist
   const seal=document.querySelector(".inv-seal");
   const passInp=document.getElementById("sealPass");
   const gateForm=document.getElementById("sealGate");
@@ -312,9 +333,8 @@ function initLoader(){
   }
   function barReady(){
     const elapsed=Date.now()-started;
-    // Öffnen, sobald Ring + Video abspielbar sind (canplay) – NICHT erst nach komplettem Download.
-    // 15 s Notausstieg, falls etwas hängt.
-    return (window.__ringReady && window.__videoReady) || elapsed>15000;
+    // CSS scenes are ready immediately; wait only for the ring, with a safety exit.
+    return (window.__ringReady && window.__stageReady) || elapsed>15000;
   }
   function reveal(){
     if(revealed) return; revealed=true;
@@ -333,7 +353,6 @@ function initLoader(){
     if(v===GATE_PASS){
       passwordOK=true;
       try{ localStorage.setItem(GATE_KEY,"1"); }catch(e){}
-      try{ window.__unlockBgVideo && window.__unlockBgVideo(); }catch(e){}   // iOS: Video entsperren (starke Geste)
       if(seal){ seal.classList.remove("locked"); seal.classList.add("authed"); }  // C&W erscheint kurz
       showGateUI(false);                               // Button/Hinweis weg, Datum erscheint
       if(barReady()) reveal();                         // schon geladen → sofort öffnen, sonst macht's tick()
@@ -354,10 +373,8 @@ function initLoader(){
 
   (function tick(){
     const elapsed=Date.now()-started;
-    const dl = window.__videoDL || 0;
-    // Balken: weicher Zeit-Anlauf, der vom echten Puffer-Fortschritt überholt werden kann.
-    // Geöffnet wird aber bei canplay (s. barReady) – der Balken muss also nicht erst 100 % erreichen.
-    const shown = Math.max(Math.min(elapsed/2500*90, 90), Math.round(dl*100));
+    // Short, deliberate envelope opening; no media download is required.
+    const shown = Math.min(elapsed/900*90, 90);
     setProgress(Math.min(99, shown));        // 100 % setzt reveal()
     if(barReady() && passwordOK){ reveal(); return; }
     requestAnimationFrame(tick);
@@ -461,7 +478,6 @@ function applyHash(){
 /* ---------- Start ---------- */
 document.documentElement.classList.add("js");
 document.documentElement.classList.add("loading");   // Ladescreen aktiv
-if(reduce) document.documentElement.classList.add("no-scrub");
 /* CSS Scroll-Driven Animations unterstützt? → Tunnel läuft komplett auf dem Compositor */
 if(window.CSS && CSS.supports && CSS.supports("animation-timeline: view()")) document.documentElement.classList.add("svd");
 

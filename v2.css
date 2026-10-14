@@ -1,7 +1,6 @@
 /* =========================================================
    Russel & Ivy — Pertunangan · Burgundy · Cream · Matcha
-   Scroll-Scrub-Video (Platzhalter) + Pop-up-Stationen.
-   Hochformat zuerst. Warmes Abendlicht, kein Beetlejuice.
+   CSS scene designs + pop-up stations.
    ========================================================= */
 @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800&family=Caveat:wght@600;700&family=Great+Vibes&display=swap');
 
@@ -29,17 +28,86 @@ img{ max-width:100%; display:block; }
 a{ color:var(--matcha); }
 .amp{ color:var(--matcha); } .mag{ color:var(--matcha); } .mar{ color:var(--mar); }   /* Matcha accent */
 
-/* ============ FIXED BÜHNE (Video-Platzhalter) ============ */
+/* ============ FIXED BÜHNE (section-specific CSS designs) ============ */
 .stage{ position:fixed; inset:0; z-index:0; overflow:hidden; }
-.stage .sky{ position:absolute; inset:0;
-  background:linear-gradient(180deg,#f3b25a 0%,#e8814a 38%,#8e3a52 64%,#3a0f22 100%); }
-.stage .glow{ position:absolute; left:50%; top:60%; width:80vmax; height:80vmax; transform:translate(-50%,-50%);
-  background:radial-gradient(circle, rgba(255,196,120,.55) 0%, rgba(255,150,80,.18) 35%, transparent 65%);
-  mix-blend-mode:screen; pointer-events:none; }
+.scene-backgrounds,.scene-bg{ position:absolute; inset:0; }
+.scene-backgrounds{ background:#2a0e16; }
+.scene-bg{ opacity:0; transition:opacity .65s ease; will-change:opacity; }
+.scene-bg::after{ content:""; position:absolute; width:min(56vw,480px); aspect-ratio:1; right:-13vw; bottom:-9vw;
+  opacity:.26; pointer-events:none; background:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240'%3E%3Cg fill='none' stroke='%23f5efe3' stroke-width='2.2'%3E%3Cpath d='M34 232C74 171 91 120 104 35M104 135C76 119 57 94 50 65M92 162C119 145 148 122 166 88M114 100C141 86 161 61 167 30'/%3E%3Cpath d='M51 67C28 48 37 26 56 37C51 14 76 10 75 35C94 17 109 37 88 51C109 57 102 82 79 72C74 96 50 91 56 70Z'/%3E%3Cpath d='M165 90C145 72 151 49 171 57C171 34 195 35 192 59C215 47 225 70 203 79C222 91 210 112 190 99C182 120 160 111 168 91Z'/%3E%3Cpath d='M169 32C151 18 157 0 174 8C175-11 197-7 193 12C213 2 224 22 205 33C223 43 212 62 194 50C189 68 168 60 174 41Z'/%3E%3Cpath d='M112 133C95 119 101 97 119 105C119 84 142 85 138 105C158 95 169 115 151 126C170 136 158 155 140 143C135 162 113 154 119 135Z'/%3E%3C/g%3E%3C/svg%3E"); }
+.scene-bg::before{ content:""; position:absolute; width:min(32vw,250px); aspect-ratio:1; left:-9vw; top:13vh;
+  opacity:.16; pointer-events:none; transform:rotate(180deg); background:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240'%3E%3Cg fill='none' stroke='%23f5efe3' stroke-width='2.2'%3E%3Cpath d='M34 232C74 171 91 120 104 35M104 135C76 119 57 94 50 65M92 162C119 145 148 122 166 88M114 100C141 86 161 61 167 30'/%3E%3Cpath d='M51 67C28 48 37 26 56 37C51 14 76 10 75 35C94 17 109 37 88 51C109 57 102 82 79 72C74 96 50 91 56 70Z'/%3E%3Cpath d='M165 90C145 72 151 49 171 57C171 34 195 35 192 59C215 47 225 70 203 79C222 91 210 112 190 99C182 120 160 111 168 91Z'/%3E%3Cpath d='M169 32C151 18 157 0 174 8C175-11 197-7 193 12C213 2 224 22 205 33C223 43 212 62 194 50C189 68 168 60 174 41Z'/%3E%3Cpath d='M112 133C95 119 101 97 119 105C119 84 142 85 138 105C158 95 169 115 151 126C170 136 158 155 140 143C135 162 113 154 119 135Z'/%3E%3C/g%3E%3C/svg%3E"); }
+.stage[data-scene="0"] .scene-bg-0,
+.stage[data-scene="1"] .scene-bg-1,
+.stage[data-scene="2"] .scene-bg-2,
+.stage[data-scene="3"] .scene-bg-3,
+.stage[data-scene="4"] .scene-bg-4,
+.stage[data-scene="5"] .scene-bg-5,
+.stage[data-scene="6"] .scene-bg-6,
+.stage[data-scene="7"] .scene-bg-7,
+.stage[data-scene="8"] .scene-bg-8{ opacity:1; }
+
+/* A different simple paper-like design for every stop in the journey. */
+.scene-bg-0{ background:
+  radial-gradient(circle at 50% 25%,rgba(245,239,227,.16) 0 1px,transparent 2px) 0 0/42px 42px,
+  radial-gradient(ellipse at 50% 0%,#8c3856 0%,#57192f 43%,#250b17 100%); }
+.scene-bg-1{ background:
+  linear-gradient(135deg,transparent 0 47%,rgba(245,239,227,.12) 47.1% 47.5%,transparent 47.6% 100%),
+  repeating-radial-gradient(circle at 50% 55%,rgba(240,194,94,.18) 0 1px,transparent 2px 42px),
+  radial-gradient(circle at 50% 48%,#74304a 0%,#3d1023 47%,#1e0914 100%); }
+.scene-bg-2{ background:
+  linear-gradient(rgba(245,239,227,.06) 1px,transparent 1px) 0 0/100% 56px,
+  linear-gradient(90deg,rgba(245,239,227,.045) 1px,transparent 1px) 0 0/56px 100%,
+  radial-gradient(circle at 80% 10%,rgba(163,191,125,.32),transparent 28%),
+  linear-gradient(145deg,#273224,#182219 55%,#20131c); }
+.scene-bg-3{ background:
+  linear-gradient(115deg,transparent 0 35%,rgba(245,239,227,.13) 35.2% 35.8%,transparent 36% 100%),
+  linear-gradient(25deg,transparent 0 54%,rgba(163,191,125,.18) 54.2% 54.8%,transparent 55% 100%),
+  radial-gradient(circle at 80% 18%,rgba(245,239,227,.15) 0 2px,transparent 3px) 0 0/72px 72px,
+  linear-gradient(145deg,#69233d,#3d1728 58%,#1c0c17); }
+.scene-bg-4{ background:
+  repeating-linear-gradient(135deg,rgba(245,239,227,.09) 0 2px,transparent 2px 36px),
+  linear-gradient(90deg,transparent 0 22%,rgba(245,239,227,.08) 22% 23%,transparent 23% 77%,rgba(245,239,227,.08) 77% 78%,transparent 78%),
+  linear-gradient(180deg,#4f6041,#283525 60%,#172018); }
+.scene-bg-5{ background:
+  linear-gradient(90deg,rgba(122,31,61,.74) 0 33.3%,rgba(245,239,227,.75) 33.3% 66.6%,rgba(163,191,125,.62) 66.6%),
+  repeating-linear-gradient(0deg,rgba(28,10,18,.12) 0 1px,transparent 1px 48px); }
+.scene-bg-6{ background:
+  radial-gradient(circle at 17% 23%,rgba(240,194,94,.2) 0 3px,transparent 4px) 0 0/68px 68px,
+  radial-gradient(circle at 79% 72%,rgba(245,239,227,.12) 0 2px,transparent 3px) 0 0/52px 52px,
+  linear-gradient(145deg,#67243b,#3b1323 55%,#21111a); }
+.scene-bg-7{ background:
+  linear-gradient(45deg,transparent 0 48%,rgba(245,239,227,.09) 48.2% 51.8%,transparent 52%),
+  linear-gradient(-45deg,transparent 0 48%,rgba(163,191,125,.12) 48.2% 51.8%,transparent 52%),
+  radial-gradient(circle at 50% 50%,#8a3154 0%,#50142f 52%,#260b19 100%); }
+.scene-bg-8{ background:
+  radial-gradient(circle at 50% 35%,rgba(245,239,227,.2) 0 1px,transparent 2px) 0 0/34px 34px,
+  radial-gradient(ellipse at 50% 42%,rgba(163,191,125,.34),transparent 40%),
+  linear-gradient(160deg,#263323,#17251c 58%,#111914); }
+.scene-bg-4::after,.scene-bg-5::after{ opacity:.18; }
+.scene-bg-8::after{ opacity:.38; }
+
+/* Each scene carries its own rose illustration: bud, pair, garden, vine, arch,
+   trio, petals, heart and wreath. Inline SVG keeps the motifs sharp at any size. */
+.scene-bg::before,.scene-bg::after{ content:none; }
+.rose-motif{ position:absolute; display:block; overflow:visible; color:rgba(245,239,227,.72); pointer-events:none; }
+.rose-motif path{ fill:none; stroke:currentColor; stroke-width:2.3; stroke-linecap:round; stroke-linejoin:round; vector-effect:non-scaling-stroke; }
+.scene-bg-0 .rose-motif{ width:min(66vw,390px); right:-11vw; bottom:-5vw; color:rgba(245,239,227,.58); }
+.scene-bg-1 .rose-motif{ width:min(77vw,500px); right:-15vw; bottom:3vh; color:rgba(240,194,94,.68); }
+.scene-bg-2 .rose-motif{ width:min(86vw,560px); right:-16vw; bottom:-9vw; color:rgba(163,191,125,.56); }
+.scene-bg-3 .rose-motif{ width:min(74vw,450px); right:-10vw; bottom:-7vw; color:rgba(245,239,227,.58); }
+.scene-bg-4 .rose-motif{ width:min(106vw,700px); left:50%; bottom:4vh; transform:translateX(-50%); color:rgba(245,239,227,.45); }
+.scene-bg-5 .rose-motif{ width:min(92vw,620px); right:-16vw; bottom:10vh; color:rgba(61,18,32,.42); }
+.scene-bg-6 .rose-motif{ width:min(78vw,470px); right:-11vw; bottom:-6vw; color:rgba(240,194,94,.56); }
+.scene-bg-7 .rose-motif{ width:min(84vw,520px); left:50%; bottom:4vh; transform:translateX(-50%); color:rgba(245,239,227,.52); }
+.scene-bg-8 .rose-motif{ width:min(96vw,600px); left:50%; bottom:1vh; transform:translateX(-50%); color:rgba(245,239,227,.56); }
+
+/* One calm, plain background for the entire invitation. */
+.scene-backgrounds{ background:#3d1220; }
+.scene-bg,.stage .vignette{ display:none; }
 .stage .vignette{ position:absolute; inset:0; pointer-events:none; z-index:4;
   background:radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(10,6,16,.55) 100%); }
-.stage .silhouette{ position:absolute; left:-5%; bottom:-1px; width:110%; height:24vh; z-index:3; }
-/* echter 3D-Ring (Three.js) — Body-Ebene, über Video, hinter den Karten */
+/* echter 3D-Ring (Three.js) — Body-Ebene, über der Kulisse, hinter den Karten */
 .ring3d{ position:fixed; inset:0; width:100% !important; height:100% !important; z-index:2; pointer-events:none; }
 /* Ring im Ladescreen NICHT mehr nach vorn — der Brief-Loader übernimmt die Bühne */
 .has3d .ring{ display:none; }       /* Platzhalter-Ring aus, sobald 3D geladen */
@@ -135,15 +203,6 @@ html:not(.js) #loader{ display:none; }   /* ohne JS keinen Loader */
 #loader.opening .seal-ring{ opacity:0; }
 
 @media (max-width:380px){ .inv-seal{ width:142px; height:140px; } .seal-mono{ font-size:2.8rem; } .inv-kicker{ font-size:1.55rem; } }
-.bg-video{ position:absolute; inset:0; width:100%; height:100%; z-index:1; overflow:hidden; }  /* Tunnel-Hintergrund über Himmel/Bokeh, hinter Ring & Karten */
-.bg-video > div, .bg-video video, .bg-video canvas{   /* scrolly-video füllt den Container randlos */
-  position:absolute; inset:0; width:100% !important; height:100% !important; object-fit:cover; }
-.has-video .silhouette, .has-video .glow, .has-video .bokeh{ display:none; }   /* Video bringt eigenen Look mit */
-.bokeh{ position:absolute; inset:0; pointer-events:none; }
-.bokeh i{ position:absolute; border-radius:50%; background:radial-gradient(circle,#fff5d8,rgba(255,225,160,.2));
-  filter:blur(1px); opacity:.0; animation:twinkle 4s ease-in-out infinite; }
-@keyframes twinkle{ 0%,100%{ opacity:.15; transform:scale(.85);} 50%{ opacity:.8; transform:scale(1.1);} }
-
 /* der fliegende Ring */
 .ring{ position:absolute; left:0; top:0; width:84px; height:84px; will-change:transform;
   transform:translate(-50%,-50%); filter:drop-shadow(0 0 22px rgba(255,200,110,.85)); }
@@ -181,7 +240,7 @@ html:not(.js) #loader{ display:none; }   /* ohne JS keinen Loader */
 .intro-date{ font-family:var(--hand); font-size:1.5rem; color:var(--matcha); margin-top:.7rem; }
 .station.intro .scrollcue{ margin-top:1.5rem; }
 
-/* kein backdrop-filter (mobil teuer) → leichter Verlauf für Lesbarkeit, Video scheint durch */
+/* kein backdrop-filter (mobil teuer) → leichter Verlauf für Lesbarkeit, Szene scheint durch */
 .card{ width:min(520px,88vw); background:linear-gradient(180deg, rgba(0,0,0,.54), rgba(0,0,0,.71));
   border:1px solid var(--glass-line); border-radius:22px; padding:30px 26px;
   box-shadow:0 24px 60px rgba(0,0,0,.4); }
@@ -216,7 +275,7 @@ html:not(.js) #loader{ display:none; }   /* ohne JS keinen Loader */
 .hero-card{ background:linear-gradient(180deg,rgba(0,0,0,.52),rgba(0,0,0,.79)); text-align:left; }
 .scrollcue{ margin-top:1.6rem; font-family:var(--hand); font-size:1.25rem; color:var(--matcha); }
 
-/* Hintergrund-Hinweis (Planung fürs Video) */
+/* Hintergrund-Hinweis */
 .bg-cue{ display:block; font-family:var(--body); font-size:.72rem; font-weight:500; line-height:1.4;
   text-transform:none; letter-spacing:.01em; color:var(--matcha); margin-bottom:14px; padding:7px 11px;
   border:1px dashed rgba(240,194,94,.55); border-radius:8px; background:rgba(0,0,0,.22); }
@@ -315,13 +374,12 @@ html:not(.js) #loader{ display:none; }   /* ohne JS keinen Loader */
 .confetti{ position:fixed; inset:0; z-index:30; pointer-events:none; display:none; }
 .confetti.go{ display:block; }
 
-/* ============ Fallback: reduced-motion / kein Scrub ============ */
+/* ============ Fallback: reduced-motion ============ */
 @media (prefers-reduced-motion: reduce){
-  .ring, .bokeh i{ animation:none !important; }
+  .ring{ animation:none !important; }
+  .scene-bg{ transition:none; }
   .js .card{ opacity:1 !important; transform:none !important; transition:none; }
 }
-.no-scrub .ring{ display:none; }
-.no-scrub .stage .sky{ background:linear-gradient(180deg,#e8814a,#8e3a52 60%,#3a0f22); }
 
 /* Desktop: Karten links, Bühne sichtbar */
 @media (min-width:820px){

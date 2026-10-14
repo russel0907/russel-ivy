@@ -55,16 +55,20 @@
     </div>
   </div>
 
-  <!-- ============ FIXED STAGE (video placeholder) ============ -->
-  <div class="stage" id="stage" aria-hidden="true">
-    <div class="sky"></div>
-    <div class="glow" id="glow"></div>
-    <div class="bokeh" id="bokeh"></div>
+  <!-- ============ FIXED STAGE (CSS scene designs) ============ -->
+  <div class="stage" id="stage" data-scene="0" aria-hidden="true">
+    <div class="scene-backgrounds">
+      <div class="scene-bg scene-bg-0"><svg class="rose-motif rose-bud" viewBox="0 0 240 280" aria-hidden="true"><g><path d="M122 266C119 190 125 138 124 91M123 175C91 160 69 136 62 104M124 201C155 183 178 157 184 126"/><path d="M119 95C87 81 92 43 113 48C115 20 151 20 151 48C175 41 184 76 152 94C140 102 130 105 119 95Z"/><path d="M123 176C101 153 82 151 72 162C91 177 108 181 123 176ZM125 202C149 181 169 182 179 195C160 208 143 209 125 202Z"/></g></svg></div>
+      <div class="scene-bg scene-bg-1"><svg class="rose-motif rose-pair" viewBox="0 0 320 260" aria-hidden="true"><g><path d="M64 244C88 190 94 133 103 82M216 244C202 189 209 138 218 84"/><path d="M101 87C73 72 82 38 104 47C107 19 141 21 139 49C165 39 178 71 149 88C132 98 116 98 101 87Z"/><path d="M217 89C190 73 198 41 220 49C223 22 257 22 254 51C281 40 293 74 264 90C247 100 232 100 217 89Z"/><path d="M103 157C79 140 61 141 51 153C69 166 87 168 103 157ZM215 158C239 142 257 143 268 155C248 168 231 169 215 158Z"/></g></svg></div>
+      <div class="scene-bg scene-bg-2"><svg class="rose-motif rose-garden" viewBox="0 0 320 320" aria-hidden="true"><g><path d="M55 286C72 239 73 190 80 145M165 313C157 250 166 184 170 117M275 286C253 238 249 190 242 145"/><path d="M78 149C56 133 62 108 81 113C83 92 108 92 108 114C128 107 138 132 118 147C103 157 91 157 78 149Z"/><path d="M168 121C143 101 151 74 173 81C176 56 206 58 204 84C230 75 241 106 216 122C199 133 182 134 168 121Z"/><path d="M240 149C218 133 225 108 244 114C246 92 272 93 270 116C293 107 304 134 282 149C266 159 252 159 240 149Z"/><path d="M80 216C62 203 47 205 38 216M170 203C152 190 138 191 129 202M242 216C261 202 275 205 285 216"/></g></svg></div>
+      <div class="scene-bg scene-bg-3"><svg class="rose-motif rose-vine" viewBox="0 0 300 360" aria-hidden="true"><g><path d="M25 339C68 280 55 236 103 192C151 148 135 91 193 33M63 281C38 261 31 237 38 211M87 235C115 234 137 220 145 197M140 159C115 143 106 124 108 100M164 82C188 85 211 69 217 46"/><path d="M88 197C59 179 66 144 91 151C95 121 131 125 128 155C156 143 169 179 141 196C123 207 104 208 88 197Z"/><path d="M191 37C164 20 172-12 196-4C199-33 235-29 232 0C261-12 273 23 244 40C226 51 208 51 191 37Z"/><path d="M67 280C48 266 35 268 26 282M142 159C161 144 177 144 187 157"/></g></svg></div>
+      <div class="scene-bg scene-bg-4"><svg class="rose-motif rose-arch" viewBox="0 0 360 250" aria-hidden="true"><g><path d="M26 231C44 79 113 22 181 22C249 22 318 79 336 231M54 173C76 158 94 156 112 167M306 173C285 158 266 156 248 167"/><path d="M99 78C73 61 80 29 102 37C105 10 139 10 137 39C163 29 175 62 146 79C130 89 113 89 99 78Z"/><path d="M181 29C153 9 162-22 185-14C189-43 223-38 219-9C247-20 259 14 230 31C212 41 197 41 181 29Z"/><path d="M260 79C234 62 242 30 264 38C267 10 301 11 298 40C325 29 337 63 307 80C291 90 275 90 260 79Z"/></g></svg></div>
+      <div class="scene-bg scene-bg-5"><svg class="rose-motif rose-trio" viewBox="0 0 360 220" aria-hidden="true"><g><path d="M74 208C91 165 95 125 100 83M180 208C181 159 180 119 181 67M286 208C270 165 266 125 260 83"/><path d="M98 86C72 69 80 37 103 45C106 17 140 18 137 47C165 36 177 71 147 87C130 98 113 98 98 86Z"/><path d="M178 70C148 48 158 14 183 23C187-8 223-4 219 26C249 15 262 51 231 70C212 82 195 82 178 70Z"/><path d="M258 86C232 70 240 38 262 46C265 18 299 19 296 48C324 37 336 71 306 87C289 98 273 98 258 86Z"/><path d="M100 148C80 135 65 137 55 149M181 132C160 119 145 121 135 134M260 148C280 135 296 137 305 149"/></g></svg></div>
+      <div class="scene-bg scene-bg-6"><svg class="rose-motif rose-petals" viewBox="0 0 300 300" aria-hidden="true"><g><path d="M153 265C146 203 151 142 151 91M151 128C113 109 95 77 98 39M152 162C188 141 209 113 207 78"/><path d="M147 93C113 79 118 42 142 50C146 20 181 24 176 53C207 42 220 78 188 94C171 104 158 105 147 93Z"/><path d="M98 40C76 26 55 35 61 57C39 58 36 82 58 88M207 79C232 59 255 68 250 90C273 93 273 118 249 121M61 221C77 197 103 201 108 223C128 211 145 227 134 245M237 226C218 202 193 207 190 229C169 218 152 234 164 251"/></g></svg></div>
+      <div class="scene-bg scene-bg-7"><svg class="rose-motif rose-heart" viewBox="0 0 320 280" aria-hidden="true"><g><path d="M160 242C116 204 62 165 62 107C62 61 119 52 160 99C201 52 258 61 258 107C258 165 204 204 160 242Z"/><path d="M98 111C75 96 83 68 103 76C106 52 135 53 132 79C156 69 167 100 141 114C125 123 110 123 98 111Z"/><path d="M221 111C198 96 206 68 226 76C229 52 258 53 255 79C279 69 290 100 264 114C248 123 233 123 221 111Z"/><path d="M160 183C135 165 143 136 164 144C167 117 199 120 196 148C223 139 234 171 206 185C189 194 174 194 160 183Z"/></g></svg></div>
+      <div class="scene-bg scene-bg-8"><svg class="rose-motif rose-wreath" viewBox="0 0 320 320" aria-hidden="true"><g><path d="M160 286C76 286 42 210 58 142C72 81 118 48 160 48C202 48 248 81 262 142C278 210 244 286 160 286Z"/><path d="M87 213C65 198 55 177 59 155M101 112C82 96 82 76 91 58M220 112C239 96 239 76 230 58M233 213C255 198 265 177 261 155"/><path d="M158 55C130 36 140 6 162 15C166-13 199-8 195 19C223 9 234 43 205 58C188 68 172 68 158 55Z"/><path d="M77 168C51 151 60 120 82 128C85 101 118 104 115 132C141 122 153 154 125 170C108 180 92 180 77 168Z"/><path d="M238 168C212 151 221 120 243 128C246 101 279 104 276 132C302 122 314 154 286 170C269 180 253 180 238 168Z"/><path d="M159 285C131 267 140 236 162 244C165 217 198 220 195 248C222 238 234 270 205 286C188 296 173 296 159 285Z"/></g></svg></div>
+    </div>
     <div class="ring" id="ring"><span class="band"></span><span class="stone"></span></div>
-    <svg class="silhouette" viewBox="0 0 1200 220" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-      <path d="M0,220 L0,150 Q60,120 80,150 Q95,90 120,150 Q140,110 160,160 L180,150 Q210,100 230,160
-               Q260,120 280,165 L1200,180 L1200,220 Z" fill="#0d0a12"/>
-    </svg>
     <div class="vignette"></div>
   </div>
 
@@ -205,8 +209,7 @@
   <script src="vendor/GLTFLoader.js"></script>
   <script src="ringdata.js"></script>
   <script src="scenedata.js?v=2"></script>
-  <script src="js/scrolly-video.js?v=5"></script>
-  <script src="v2.js?v=30"></script>
+  <script src="v2.js?v=31"></script>
   <script src="ring3d.js?v=15"></script>
 </body>
 </html>

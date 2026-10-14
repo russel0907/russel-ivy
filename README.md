@@ -4,13 +4,12 @@ A scroll-driven, interactive engagement-ceremony microsite adapted from the
 "Ring Journey" demo. Theme: **Burgundy, Cream & Matcha**. Ceremony: **12 December 2026,
 2:00 PM · the bride's family home**.
 
-Built around scroll-driven storytelling, a drag-to-spin 3D ring (Three.js) and a
-scrubbed background video (ScrollyVideo).
+Built around scroll-driven storytelling, section-specific CSS background designs,
+and a drag-to-spin 3D ring (Three.js).
 
 ## Run it
 
-The site uses HTTP Range requests to scrub the background video, so serve it with
-the bundled server (Python's `http.server` does not support ranges):
+Serve the site with the bundled static server:
 
 ```bash
 node server.js
@@ -24,13 +23,11 @@ node server.js
 | Path | What it is |
 |------|-----------|
 | `index.html` | Main page — the scroll "journey" (welcome, programme, attire, food, RSVP…) |
-| `v2.css` / `v2.js` | Core styles and app logic (loader, countdown, forms, confetti) |
+| `v2.css` / `v2.js` | Core styles and app logic (CSS scene designs, loader, countdown, forms, confetti) |
 | `ring3d.js` | Three.js 3D ring (drag to spin, per-station lighting) |
 | `ringdata.js` | The ring 3D model (base64 GLB) |
 | `scenedata.js` | Lighting keyframes per scroll position |
-| `js/scrolly-video.js` | ScrollyVideo library (video scrub engine) |
 | `vendor/` | Three.js r137 + RoomEnvironment + GLTFLoader (local, no CDN) |
-| `videos/` | Background videos (FHD landscape + 2 portrait tiers) |
 | `bilder/` | Social preview image (og-preview) |
 | `server.js` | Zero-dependency static server with Range support |
 
