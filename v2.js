@@ -1,6 +1,6 @@
 /* =========================================================
    Russel & Ivy — Pertunangan · Burgundy · Cream · Matcha
-   Lightweight CSS scene changes + CSS-Scroll-Tunnel + WebGL ring.
+   Lightweight CSS scene changes + CSS-Scroll-Tunnel.
    ========================================================= */
 
 /* ---- später eintragen ---- */
@@ -340,8 +340,8 @@ function initLoader(){
   }
   function barReady(){
     const elapsed=Date.now()-started;
-    // CSS scenes are ready immediately; wait only for the ring, with a safety exit.
-    return (window.__ringReady && window.__stageReady) || elapsed>15000;
+    // The background is ready without loading any 3D assets.
+    return window.__stageReady || elapsed>15000;
   }
   function playInvitationMusic(){
     const music=document.getElementById("invitationMusic");
