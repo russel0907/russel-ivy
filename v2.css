@@ -2,17 +2,17 @@
    Russel & Ivy — Pertunangan · Burgundy · Cream · Matcha
    CSS scene designs + pop-up stations.
    ========================================================= */
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800&family=Caveat:wght@600;700&family=Great+Vibes&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Nunito:wght@400;500;600;700;800&family=Caveat:wght@600;700&family=Great+Vibes&display=swap');
 
 :root{
   --cream:#f5efe3; --cream2:#e7dcc8; --ink:#1c0a12;
   --matcha:#a3bf7d; --ember:#c65a3c; --terra:#b0574a;
   --sage:#a3bf7d; --mag:#7a1f3d; --mar:#a3bf7d; --forest:#3d1220;  /* Burgundy · Cream · Matcha */
   --glass:rgba(28,10,18,.32); --glass-line:rgba(245,239,227,.18);
-  --disp:"Baloo 2", "Arial Rounded MT Bold", sans-serif;
+  --disp:"Nunito", -apple-system, "Segoe UI", sans-serif;
   --body:"Nunito", -apple-system, "Segoe UI", sans-serif;
-  --hand:"Caveat", cursive;
-  --script:"Great Vibes", "Snell Roundhand", cursive;
+  --hand:"Nunito", -apple-system, "Segoe UI", sans-serif;
+  --script:"Nunito", -apple-system, "Segoe UI", sans-serif;
 }
 *{ margin:0; padding:0; box-sizing:border-box; }
 html{ scroll-behavior:auto; scroll-snap-type:y proximity; }
@@ -27,6 +27,13 @@ html, body{ max-width:100%; overflow-x:hidden;
 img{ max-width:100%; display:block; }
 a{ color:var(--matcha); }
 .amp{ color:var(--matcha); } .mag{ color:var(--matcha); } .mar{ color:var(--mar); }   /* Matcha accent */
+
+/* Burgundy text accents; retain the existing button fill colors. */
+a, .amp, .mag, .mar, .inv-kicker, .inv-date, .seal-hint,
+.intro-date, .eyebrow, .title small, .scrollcue, .bg-cue,
+.timeline .time, .address, .goal-card .secret, .faq summary::after{
+  color:#7a1f3d !important;
+}
 
 /* ============ FIXED BÜHNE (section-specific CSS designs) ============ */
 .stage{ position:fixed; inset:0; z-index:0; overflow:hidden; }
@@ -102,8 +109,12 @@ a{ color:var(--matcha); }
 .scene-bg-7 .rose-motif{ width:min(84vw,520px); left:50%; bottom:4vh; transform:translateX(-50%); color:rgba(245,239,227,.52); }
 .scene-bg-8 .rose-motif{ width:min(96vw,600px); left:50%; bottom:1vh; transform:translateX(-50%); color:rgba(245,239,227,.56); }
 
-/* One calm, plain background for the entire invitation. */
-.scene-backgrounds{ background:#3d1220; }
+/* Shared portrait background with a soft overlay for readable text. */
+.scene-backgrounds{
+  background:linear-gradient(rgba(28,10,18,.22),rgba(28,10,18,.38)),
+    url("images/bg.png") center center / cover no-repeat;
+  background-color:#3d1220;
+}
 .scene-bg,.stage .vignette{ display:none; }
 .stage .vignette{ position:absolute; inset:0; pointer-events:none; z-index:4;
   background:radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(10,6,16,.55) 100%); }
@@ -263,10 +274,10 @@ html:not(.js) #loader{ display:none; }   /* ohne JS keinen Loader */
 .js:not(.svd) .station.in .card{ opacity:1; transform:none; }
 
 .eyebrow{ font-family:var(--hand); font-size:1.3rem; color:var(--mar); display:inline-block; transform:rotate(-2deg); margin-bottom:.5rem; }
-.title{ font-family:var(--disp); font-size:clamp(3rem,17vw,5.6rem); line-height:.86; text-transform:uppercase; text-shadow:0 6px 30px rgba(0,0,0,.45); }
+.title{ font-family:"Dancing Script", cursive; font-size:clamp(3rem,17vw,5.6rem); line-height:.94; font-weight:700; text-transform:none; text-shadow:0 6px 30px rgba(0,0,0,.45); }
 .title small{ font-family:var(--hand); font-size:.18em; color:var(--mar); text-transform:none; vertical-align:super; }
-.statement{ font-family:var(--disp); font-size:clamp(2.6rem,12vw,4.4rem); line-height:.92; text-transform:uppercase; }
-.display{ font-family:var(--disp); font-size:clamp(2.4rem,11vw,4rem); line-height:.9; text-transform:uppercase; }
+.statement{ font-family:var(--disp); font-size:clamp(2.6rem,12vw,4.4rem); line-height:.98; font-weight:700; text-transform:none; }
+.display{ font-family:var(--disp); font-size:clamp(2.4rem,11vw,4rem); line-height:.96; font-weight:700; text-transform:none; }
 /* Riesen-Überschriften dürfen lange Wörter umbrechen statt seitlich rauszuragen */
 .title, .statement, .display, .big-center, .flavor-text p, .site-footer .big{ overflow-wrap:break-word; }
 .lead{ margin-top:1rem; opacity:.92; }
