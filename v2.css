@@ -1,0 +1,332 @@
+/* =========================================================
+   Russel & Ivy — Pertunangan · Burgundy · Cream · Matcha
+   Scroll-Scrub-Video (Platzhalter) + Pop-up-Stationen.
+   Hochformat zuerst. Warmes Abendlicht, kein Beetlejuice.
+   ========================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;900&family=Caveat:wght@600;700&family=Great+Vibes&display=swap');
+
+:root{
+  --cream:#f5efe3; --cream2:#e7dcc8; --ink:#1c0a12;
+  --matcha:#a3bf7d; --ember:#c65a3c; --terra:#b0574a;
+  --sage:#a3bf7d; --mag:#7a1f3d; --mar:#a3bf7d; --forest:#3d1220;  /* Burgundy · Cream · Matcha */
+  --glass:rgba(28,10,18,.32); --glass-line:rgba(245,239,227,.18);
+  --disp:"Anton", Impact, sans-serif;
+  --body:"Archivo", -apple-system, "Segoe UI", sans-serif;
+  --hand:"Caveat", cursive;
+  --script:"Great Vibes", "Snell Roundhand", cursive;
+}
+*{ margin:0; padding:0; box-sizing:border-box; }
+html{ scroll-behavior:auto; scroll-snap-type:y proximity; }
+body{
+  font-family:var(--body); color:var(--cream); background:#1f0d15;
+  font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased;
+}
+/* Kein horizontales Wackeln auf dem Handy: clip statt hidden = kein seitlicher Scroll-Container (iOS) */
+html, body{ max-width:100%; overflow-x:hidden;
+  -webkit-text-size-adjust:100%; -moz-text-size-adjust:100%; text-size-adjust:100%; }  /* alte Handys blähen sonst die Schrift auf */
+@supports (overflow:clip){ html, body{ overflow-x:clip; } }
+img{ max-width:100%; display:block; }
+a{ color:var(--matcha); }
+.amp{ color:var(--matcha); } .mag{ color:var(--matcha); } .mar{ color:var(--mar); }   /* Matcha accent */
+
+/* ============ FIXED BÜHNE (Video-Platzhalter) ============ */
+.stage{ position:fixed; inset:0; z-index:0; overflow:hidden; }
+.stage .sky{ position:absolute; inset:0;
+  background:linear-gradient(180deg,#f3b25a 0%,#e8814a 38%,#8e3a52 64%,#3a0f22 100%); }
+.stage .glow{ position:absolute; left:50%; top:60%; width:80vmax; height:80vmax; transform:translate(-50%,-50%);
+  background:radial-gradient(circle, rgba(255,196,120,.55) 0%, rgba(255,150,80,.18) 35%, transparent 65%);
+  mix-blend-mode:screen; pointer-events:none; }
+.stage .vignette{ position:absolute; inset:0; pointer-events:none; z-index:4;
+  background:radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(10,6,16,.55) 100%); }
+.stage .silhouette{ position:absolute; left:-5%; bottom:-1px; width:110%; height:24vh; z-index:3; }
+/* echter 3D-Ring (Three.js) — Body-Ebene, über Video, hinter den Karten */
+.ring3d{ position:fixed; inset:0; width:100% !important; height:100% !important; z-index:2; pointer-events:none; }
+/* Ring im Ladescreen NICHT mehr nach vorn — der Brief-Loader übernimmt die Bühne */
+.has3d .ring{ display:none; }       /* Platzhalter-Ring aus, sobald 3D geladen */
+
+/* ============ LADESCREEN: grünes Einladungs-Tor mit Wachssiegel 💌 ============ */
+#loader{ position:fixed; inset:0; z-index:9000; overflow:hidden; perspective:1700px;
+  background:transparent;   /* die zwei Türen bilden die grüne Fläche; dahinter = die Seite */
+  display:flex; align-items:center; justify-content:center;
+  transition:opacity .55s ease; }
+#loader.done{ opacity:0; pointer-events:none; }
+html:not(.js) #loader{ display:none; }   /* ohne JS keinen Loader */
+
+/* Zwei grüne Umschlag-Hälften — öffnen beim Fertigladen nach links & rechts auf */
+.door{ position:absolute; top:0; height:100%; width:50.6%; z-index:1; backface-visibility:hidden; overflow:hidden;
+  background:linear-gradient(175deg,#6d1f3d,#3d1220); will-change:transform;
+  transition:transform 1s cubic-bezier(.7,0,.25,1); }
+/* feines Relief-/Papier-Grain */
+.door::before{ content:""; position:absolute; inset:0; pointer-events:none; mix-blend-mode:overlay; opacity:.14;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:160px 160px; }
+/* harte Mittel-Naht = klar zwei Hälften */
+.door-l{ left:0;  transform-origin:left center;  box-shadow:inset -3px 0 4px rgba(0,0,0,.5); }
+.door-r{ right:0; transform-origin:right center; box-shadow:inset 3px 0 4px rgba(0,0,0,.5), inset 6px 0 9px rgba(255,255,255,.05); }
+#loader.opening .door-l{ transform:rotateY(-118deg); }
+#loader.opening .door-r{ transform:rotateY( 118deg); }
+
+/* Mitte: „Wir trauen uns" + Wachssiegel + Datum (gold auf grün) */
+.invite{ position:relative; z-index:3; display:flex; flex-direction:column; align-items:center; gap:20px;
+  transition:opacity .4s ease, transform .55s ease; }
+#loader.opening .invite{ opacity:0; transform:scale(.82); }
+.inv-kicker{ font-family:var(--hand); font-size:1.85rem; color:var(--matcha); text-shadow:0 2px 8px rgba(0,0,0,.35); }
+.inv-date{ font-family:var(--body); font-size:.95rem; letter-spacing:.3em; color:var(--matcha); padding-left:.3em; opacity:.92; }
+
+/* Wachssiegel — gold, Monogramm wie in Wachs gepresst (embossed) */
+.inv-seal{ position:relative; width:184px; height:180px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; padding:10px 0 0;
+  color:#f3d3c2;
+  background:radial-gradient(circle at 38% 30%, #b05870 0%, #7a1f3d 46%, #4a0f22 100%);
+  border-radius:42% 58% 53% 47% / 57% 44% 58% 42%;   /* deutlich unregelmäßig = handgedrücktes Wachs */
+  box-shadow:0 14px 28px rgba(30,4,12,.6),
+             inset 0 6px 10px rgba(255,190,200,.35),
+             inset 0 -11px 20px rgba(40,4,14,.7);
+  text-shadow:0 1px 1px rgba(255,220,210,.4), 0 -1px 1px rgba(60,6,16,.7); }   /* in Wachs gepresst */
+.inv-seal::before{ content:""; position:absolute; inset:12px; border-radius:inherit; pointer-events:none;
+  box-shadow:inset 0 2px 4px rgba(40,4,14,.6), inset 0 -2px 4px rgba(255,190,200,.4); }   /* Stempel-Rand */
+.seal-mono{ font-family:var(--script); font-size:3.3rem; line-height:1; }
+.seal-pct{ font-family:var(--body); font-size:.6rem; letter-spacing:.16em; padding-left:.16em; opacity:.78;
+  text-shadow:0 1px 1px rgba(60,6,16,.5); }   /* small load % under the R&I monogram */
+
+/* Passwort-Eingabe direkt im Siegel (statt C&W), Seite lädt derweil */
+.seal-gate{ display:none; flex-direction:column; align-items:center; gap:3px; }
+.inv-seal.locked .seal-mono{ display:none; }
+.inv-seal.locked .seal-pct{ display:none; }          /* % weg, damit Platz fürs Feld */
+.inv-seal.locked .seal-gate{ display:flex; }
+.seal-pass{ width:124px; max-width:78%; padding:8px 8px; text-align:center;
+  border:none; border-radius:8px; background:rgba(255,246,214,.32);
+  box-shadow:inset 0 2px 4px rgba(102,60,8,.45), 0 1px 0 rgba(255,245,210,.5);
+  font-family:var(--body); font-size:1rem; letter-spacing:.14em; color:#5a3a06; outline:none; }
+.seal-pass::placeholder{ color:rgba(90,58,6,.5); letter-spacing:.06em; }
+.seal-pass:focus{ background:rgba(255,246,214,.5); box-shadow:inset 0 2px 4px rgba(102,60,8,.5), 0 0 0 2px rgba(120,70,8,.45); }
+.seal-err{ font-family:var(--body); font-size:.6rem; letter-spacing:.04em; color:#8a2417; min-height:.85em; }
+.inv-seal.locked{ cursor:pointer; }
+/* klarer „Öffnen"-Button + Hinweis (nur im Passwort-Modus sichtbar) — deutlich, aber elegant */
+.seal-open{ display:inline-flex; align-items:center; gap:.4em; margin-top:16px;
+  font-family:var(--body); font-weight:700; font-size:1rem; letter-spacing:.02em; color:#3a2200;
+  background:linear-gradient(135deg,#f6c956,#dca12d); border:0; border-radius:999px; padding:12px 26px;
+  cursor:pointer; box-shadow:0 6px 16px rgba(80,48,6,.4), inset 0 1px 0 rgba(255,243,200,.7);
+  animation:sealOpenPulse 1.7s ease-in-out infinite; }
+.seal-open[hidden]{ display:none; }
+.seal-open:active{ transform:translateY(1px); }
+.seal-open span{ font-size:1.1em; }
+.seal-hint{ margin-top:11px; font-family:var(--body); font-size:.82rem; color:var(--matcha); opacity:.9; }
+.seal-hint[hidden]{ display:none; }
+.seal-hint b{ font-weight:700; }
+@keyframes sealOpenPulse{ 0%,100%{ transform:scale(1); box-shadow:0 6px 16px rgba(80,48,6,.4), inset 0 1px 0 rgba(255,243,200,.7); }
+  50%{ transform:scale(1.045); box-shadow:0 9px 24px rgba(240,194,94,.55), inset 0 1px 0 rgba(255,243,200,.85); } }
+@media (prefers-reduced-motion:reduce){ .seal-open{ animation:none; } }
+.inv-seal.shake{ animation:cwSealShake .4s; }
+@keyframes cwSealShake{ 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+/* Ladeanzeige = rotglühender Punkt, der oben startet und sich um den Siegelrand dreht, bis alles glüht */
+.seal-wrap{ position:relative; display:flex; align-items:center; justify-content:center; }
+.seal-wrap .inv-seal{ position:relative; z-index:1; }
+.seal-ring{ position:absolute; left:50%; top:50%; width:99%; height:99%;
+  transform:translate(-50%,-50%) rotate(-90deg);   /* Start oben am Siegel, sitzt HINTER dem Siegel */
+  overflow:visible; pointer-events:none; z-index:0; transition:opacity .3s ease; }
+/* Blur läuft IM SVG (feGaussianBlur) — drop-shadow auf SVG-Strichen blurrt auf Mobile Safari oft nicht */
+.seal-ring ellipse{ fill:none; stroke-linecap:round;
+  stroke-dasharray:100; stroke-dashoffset:var(--thread,100);
+  transition:stroke-dashoffset .14s linear; }
+.seal-ring .ring-glow{ stroke:#ff2a30; stroke-width:22; }   /* dicke, geblurrte Glut */
+.seal-ring .ring-core{ stroke:#ff7176; stroke-width:7; }    /* heller Kern für Definition */
+#loader.opening .seal-ring{ opacity:0; }
+
+@media (max-width:380px){ .inv-seal{ width:142px; height:140px; } .seal-mono{ font-size:2.8rem; } .inv-kicker{ font-size:1.55rem; } }
+.bg-video{ position:absolute; inset:0; width:100%; height:100%; z-index:1; overflow:hidden; }  /* Tunnel-Hintergrund über Himmel/Bokeh, hinter Ring & Karten */
+.bg-video > div, .bg-video video, .bg-video canvas{   /* scrolly-video füllt den Container randlos */
+  position:absolute; inset:0; width:100% !important; height:100% !important; object-fit:cover; }
+.has-video .silhouette, .has-video .glow, .has-video .bokeh{ display:none; }   /* Video bringt eigenen Look mit */
+.bokeh{ position:absolute; inset:0; pointer-events:none; }
+.bokeh i{ position:absolute; border-radius:50%; background:radial-gradient(circle,#fff5d8,rgba(255,225,160,.2));
+  filter:blur(1px); opacity:.0; animation:twinkle 4s ease-in-out infinite; }
+@keyframes twinkle{ 0%,100%{ opacity:.15; transform:scale(.85);} 50%{ opacity:.8; transform:scale(1.1);} }
+
+/* der fliegende Ring */
+.ring{ position:absolute; left:0; top:0; width:84px; height:84px; will-change:transform;
+  transform:translate(-50%,-50%); filter:drop-shadow(0 0 22px rgba(255,200,110,.85)); }
+.ring .band{ position:absolute; inset:0; border-radius:50%;
+  border:11px solid; border-image:linear-gradient(135deg,#fff2c4,#f0c25e 40%,#a9772a 70%,#ffe9a8) 1;
+  -webkit-mask:radial-gradient(transparent 38%,#000 40%); mask:radial-gradient(transparent 38%,#000 40%);
+  background:conic-gradient(from 0deg,#f6d885,#a9772a,#ffe9a8,#caa044,#f6d885); border-radius:50%; }
+.ring .stone{ position:absolute; top:-9px; left:50%; width:20px; height:20px; transform:translateX(-50%) rotate(45deg);
+  background:linear-gradient(135deg,#fff,#bfe9ff 40%,#7fc4e6); box-shadow:0 0 16px #bfe9ff; }
+
+/* ============ HUD (Marke + Fortschritt) ============ */
+.hud{ position:fixed; top:0; left:0; right:0; z-index:20; display:flex; align-items:center; justify-content:space-between;
+  padding:14px 18px calc(14px + env(safe-area-inset-top,0)); }
+.brand{ font-family:var(--disp); font-size:1.5rem; color:#fff; text-decoration:none; line-height:.78; text-shadow:0 2px 12px rgba(0,0,0,.5); }
+.brand small{ display:block; font-family:var(--hand); font-size:.62rem; opacity:.9; }
+.progress-pill{ display:flex; align-items:center; gap:8px; background:rgba(22,15,28,.55); backdrop-filter:blur(10px);
+  border:1px solid var(--glass-line); color:var(--cream); border-radius:999px; padding:7px 12px; cursor:pointer; font:inherit; }
+.progress-pill .track{ width:54px; height:6px; border-radius:999px; background:rgba(255,255,255,.22); overflow:hidden; }
+.progress-pill .fill{ display:block; height:100%; width:0%; border-radius:999px;
+  background:linear-gradient(90deg,var(--mar),var(--mag)); transition:width .4s ease; }
+.progress-pill .count{ font-size:.74rem; font-weight:700; letter-spacing:.02em; white-space:nowrap; }
+
+/* ============ DIE REISE ============ */
+.journey{ position:relative; z-index:5; }
+.station{ min-height:100svh; display:flex; align-items:center; justify-content:center; padding:96px 20px 80px;
+  scroll-snap-align:center; }
+.station.flavor{ min-height:80svh; }
+/* Tunnel = mittig (kein Links/Rechts mehr) */
+.station[data-side]{ justify-content:center; }
+
+/* Intro: Ring oben (Bühne), Namen ins untere Drittel */
+.station.intro{ text-align:center; align-items:flex-end; padding-bottom:15vh; }
+.intro-inner{ text-shadow:0 4px 24px rgba(0,0,0,.55); }
+.title.big-center{ font-size:clamp(3.2rem,18vw,6.4rem); }
+.intro-date{ font-family:var(--hand); font-size:1.5rem; color:var(--matcha); margin-top:.7rem; }
+.station.intro .scrollcue{ margin-top:1.5rem; }
+
+/* kein backdrop-filter (mobil teuer) → leichter Verlauf für Lesbarkeit, Video scheint durch */
+.card{ width:min(520px,88vw); background:linear-gradient(180deg, rgba(0,0,0,.54), rgba(0,0,0,.71));
+  border:1px solid var(--glass-line); border-radius:22px; padding:30px 26px;
+  box-shadow:0 24px 60px rgba(0,0,0,.4); }
+/* ===== Tunnel: Karten skalieren aus der Mitte — CSS Scroll-Driven (Compositor, kein JS) ===== */
+.card, .intro-inner, .flavor-text{ transform-origin:center center; }
+@keyframes tunnelCard{
+  0%   { opacity:0; transform:scale(.4);  }
+  30%  { opacity:1; transform:scale(1);   }
+  70%  { opacity:1; transform:scale(1);   }   /* Halte-Zone: lesbar & stabil in der Mitte */
+  100% { opacity:0; transform:scale(1.8); }
+}
+.svd .card, .svd .intro-inner, .svd .flavor-text{
+  animation: tunnelCard linear both;
+  animation-timeline: view();
+  animation-range: cover 0% cover 100%;
+  will-change: transform, opacity;
+}
+/* Fallback ohne Scroll-Driven: sanftes Fade-up via IntersectionObserver */
+.js:not(.svd) .card{ opacity:0; transform:translateY(28px); transition:opacity .6s ease, transform .6s ease; }
+.js:not(.svd) .station.in .card{ opacity:1; transform:none; }
+
+.eyebrow{ font-family:var(--hand); font-size:1.3rem; color:var(--mar); display:inline-block; transform:rotate(-2deg); margin-bottom:.5rem; }
+.title{ font-family:var(--disp); font-size:clamp(3rem,17vw,5.6rem); line-height:.86; text-transform:uppercase; text-shadow:0 6px 30px rgba(0,0,0,.45); }
+.title small{ font-family:var(--hand); font-size:.18em; color:var(--mar); text-transform:none; vertical-align:super; }
+.statement{ font-family:var(--disp); font-size:clamp(2.6rem,12vw,4.4rem); line-height:.92; text-transform:uppercase; }
+.display{ font-family:var(--disp); font-size:clamp(2.4rem,11vw,4rem); line-height:.9; text-transform:uppercase; }
+/* Riesen-Überschriften dürfen lange Wörter umbrechen statt seitlich rauszuragen */
+.title, .statement, .display, .big-center, .flavor-text p, .site-footer .big{ overflow-wrap:break-word; }
+.lead{ margin-top:1rem; opacity:.92; }
+.sub{ margin-top:1rem; font-size:1.05rem; opacity:.92; }
+
+.hero-card{ background:linear-gradient(180deg,rgba(0,0,0,.52),rgba(0,0,0,.79)); text-align:left; }
+.scrollcue{ margin-top:1.6rem; font-family:var(--hand); font-size:1.25rem; color:var(--matcha); }
+
+/* Hintergrund-Hinweis (Planung fürs Video) */
+.bg-cue{ display:block; font-family:var(--body); font-size:.72rem; font-weight:500; line-height:1.4;
+  text-transform:none; letter-spacing:.01em; color:var(--matcha); margin-bottom:14px; padding:7px 11px;
+  border:1px dashed rgba(240,194,94,.55); border-radius:8px; background:rgba(0,0,0,.22); }
+.bg-cue b{ font-weight:800; }
+
+/* Greif-Cursor beim Ring-Ziehen */
+.grabbing, .grabbing *{ cursor:grabbing !important; }
+
+/* Countdown */
+.countdown{ display:flex; gap:14px; flex-wrap:wrap; margin-top:1.4rem; }
+.countdown .unit{ text-align:center; }
+.countdown .num{ font-family:var(--disp); font-size:clamp(1.8rem,8vw,2.8rem); line-height:1; color:#fff; }
+.countdown .lbl{ font-size:.66rem; letter-spacing:.16em; text-transform:uppercase; opacity:.7; margin-top:3px; }
+
+/* Timeline */
+.timeline{ list-style:none; margin-top:1rem; }
+.timeline li{ display:flex; gap:16px; padding:14px 0; border-bottom:1px solid rgba(245,239,227,.14); }
+.timeline .time{ font-family:var(--disp); font-size:1.3rem; color:var(--mar); min-width:84px; }
+.timeline .what strong{ display:block; font-family:var(--disp); font-size:1.15rem; text-transform:uppercase; letter-spacing:.01em; }
+.timeline .what span{ opacity:.72; font-size:.9rem; }
+
+/* Adresse + Lodging */
+.address{ font-family:var(--disp); font-size:1.6rem; line-height:1.1; margin:.8rem 0; color:var(--matcha); text-transform:uppercase; }
+.lodging{ display:grid; gap:10px; margin:1rem 0 1.2rem; }
+.lodge{ background:rgba(245,239,227,.07); border:1px solid var(--glass-line); border-radius:12px; padding:12px 14px; }
+.lodge strong{ display:block; }
+.lodge span{ font-size:.86rem; opacity:.72; }
+
+/* Buttons */
+.btn{ --bg:var(--matcha); --fg:#2a1c08; display:inline-flex; align-items:center; gap:.5em; background:var(--bg); color:var(--fg);
+  font-family:var(--body); font-weight:800; font-size:.95rem; letter-spacing:.02em; text-transform:uppercase;
+  white-space:nowrap;   /* Button-Text nie umbrechen (auch auf alten Handys) */
+  padding:13px 24px; border:none; border-radius:999px; text-decoration:none; cursor:pointer;
+  transition:transform .2s, box-shadow .2s, background .2s; }
+.btn:hover{ transform:translateY(-2px); box-shadow:0 10px 26px rgba(0,0,0,.4); }
+.btn.pink{ --bg:var(--mag); --fg:#fff; }
+.btn.ghost{ --bg:transparent; --fg:var(--cream); border:2px solid var(--glass-line); }
+.btn.big{ padding:16px 32px; font-size:1.05rem; }
+/* CTA-Buttons sollen nicht direkt am Text darüber kleben */
+.card > .btn{ margin-top:1.7rem; }
+.mini-form .btn{ margin-top:.7rem; }
+.lodge-card .body > .btn{ margin-top:1rem; }
+
+/* Mini-Formulare */
+.mini-form{ margin-top:1.2rem; }
+.field{ margin-bottom:14px; }
+.field label{ display:block; font-weight:700; font-size:.74rem; text-transform:uppercase; letter-spacing:.06em; margin-bottom:5px; opacity:.85; }
+.field input, .field select{ width:100%; padding:12px 13px; border:1px solid var(--glass-line); border-radius:10px;
+  font-family:var(--body); font-size:1rem; color:var(--cream); background:rgba(245,239,227,.08); }
+.field input::placeholder{ color:rgba(245,239,227,.45); }
+.field input:focus, .field select:focus{ outline:none; border-color:var(--mag); background:rgba(245,239,227,.12); }
+.field select option{ color:#000; }
+.radio-row{ display:flex; gap:10px; flex-wrap:nowrap; margin-bottom:14px; }
+.radio-pill{ flex:1; min-width:0; }
+.radio-pill input{ position:absolute; opacity:0; }
+.radio-pill label{ display:block; text-align:center; padding:11px 14px; border:1px solid var(--glass-line); border-radius:999px; cursor:pointer; font-weight:700; white-space:nowrap; }
+.radio-pill input:checked + label{ background:var(--mag); color:#fff; border-color:var(--mag); }
+.form-status{ margin-top:12px; padding:11px 14px; border-radius:10px; font-weight:700; display:none; }
+.form-status.show{ display:block; }
+.form-status.ok{ background:rgba(120,200,120,.18); color:#bfe9b6; border:1px solid rgba(120,200,120,.4); }
+.form-status.err{ background:rgba(230,120,90,.18); color:#f4c0ad; border:1px solid rgba(230,120,90,.4); }
+
+.card{ position:relative; }
+.field label .opt{ font-weight:400; opacity:.6; font-size:.85em; }
+.h-note{ font-size:.5em; font-weight:400; opacity:.55; letter-spacing:0; }
+/* Ring-Dreh-Hinweis nur auf Desktop (auf dem Handy zieht man nicht) */
+@media (max-width:819px){ .cue-desktop{ display:none; } }
+
+/* Flavor */
+.flavor{ text-align:center; }
+.flavor-text p{ font-family:var(--disp); font-size:clamp(1.8rem,9vw,3rem); text-transform:uppercase; line-height:1; margin:.4rem 0;
+  color:#fff; text-shadow:0 4px 24px rgba(0,0,0,.5); opacity:.92; }
+
+/* Goal / FAQ */
+.goal-card .secret{ margin-top:1rem; font-family:var(--hand); font-size:1.3rem; color:var(--matcha); }
+.faq{ border-top:1px solid var(--glass-line); margin-top:6px; }
+.faq summary{ position:relative; cursor:pointer; list-style:none; padding:14px 46px 14px 0; font-family:var(--disp); font-size:1.1rem; text-transform:uppercase; }
+.faq summary::-webkit-details-marker{ display:none; }
+/* großer, gut sichtbarer Ausklapp-Pfeil, der hüpft = „hier antippen zum Aufklappen" */
+.faq summary::after{ content:"⌄"; position:absolute; right:6px; top:34%; transform:translateY(-50%);
+  font-size:2rem; line-height:0; font-weight:700; color:var(--matcha);
+  animation:faqHint 1.3s ease-in-out infinite; transition:transform .28s ease, color .28s ease; }
+.faq[open] summary::after,.faq details[open] summary::after{
+  content:"⌄"; animation:none; color:var(--mag); transform:translateY(-50%) rotate(180deg); }
+@keyframes faqHint{ 0%,100%{ transform:translateY(-50%); } 50%{ transform:translateY(-15%); } }
+@media (prefers-reduced-motion:reduce){ .faq summary::after{ animation:none; } }
+.faq p{ padding-bottom:14px; opacity:.82; font-size:.95rem; }
+
+/* Footer */
+.site-footer{ position:relative; z-index:5; text-align:center; padding:70px 20px calc(50px + env(safe-area-inset-bottom,0));
+  background:linear-gradient(180deg,transparent,#1a0a11 40%); }
+.site-footer .big{ font-family:var(--disp); font-size:clamp(2.4rem,14vw,4.5rem); text-transform:uppercase; line-height:.9; }
+.site-footer p{ opacity:.7; margin-top:.8rem; font-size:.88rem; }
+
+/* Konfetti */
+.confetti{ position:fixed; inset:0; z-index:30; pointer-events:none; display:none; }
+.confetti.go{ display:block; }
+
+/* ============ Fallback: reduced-motion / kein Scrub ============ */
+@media (prefers-reduced-motion: reduce){
+  .ring, .bokeh i{ animation:none !important; }
+  .js .card{ opacity:1 !important; transform:none !important; transition:none; }
+}
+.no-scrub .ring{ display:none; }
+.no-scrub .stage .sky{ background:linear-gradient(180deg,#e8814a,#8e3a52 60%,#3a0f22); }
+
+/* Desktop: Karten links, Bühne sichtbar */
+@media (min-width:820px){
+  body{ font-size:18px; }
+  .station{ padding-left:7vw; padding-right:7vw; }
+  .card{ width:min(520px,46vw); }
+  .ring{ width:104px; height:104px; }
+}

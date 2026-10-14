@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="robots" content="noindex, nofollow" />
+  <script>document.documentElement.classList.add('js','loading');</script>
+  <style>
+    html{background:#2a0e16;}
+    body{margin:0;background:#2a0e16;}
+    #loader{position:fixed;inset:0;z-index:9000;overflow:hidden;background:#2a0e16;}
+    #loader .door{position:absolute;top:0;height:100%;width:50.6%;background:linear-gradient(175deg,#6d1f3d,#3d1220);}
+    #loader .door-l{left:0;} #loader .door-r{right:0;}
+  </style>
+  <title>Russel &amp; Ivy · Pertunangan · 12.12.2026</title>
+  <meta name="theme-color" content="#3d1220" />
+  <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png" />
+  <link rel="icon" href="favicon-16.png" sizes="16x16" type="image/png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Russel &amp; Ivy · Pertunangan" />
+  <meta property="og:url" content="https://wanjadoering.de/projekte/ring-reise/demo-en/" />
+  <meta property="og:image" content="https://wanjadoering.de/projekte/ring-reise/demo-en/bilder/og-preview.jpg?v=6" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="The Ring Journey · interactive scroll demo" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Russel &amp; Ivy · Pertunangan" />
+  <meta name="twitter:image" content="https://wanjadoering.de/projekte/ring-reise/demo-en/bilder/og-preview.jpg?v=6" />
+  <link rel="stylesheet" href="v2.css?v=15" />
+</head>
+<body>
+
+  <!-- ============ LOADER: green invitation gate with wax seal 💌 ============ -->
+  <div id="loader">
+    <div class="door door-l" aria-hidden="true"></div>
+    <div class="door door-r" aria-hidden="true"></div>
+    <div class="invite">
+      <div class="seal-wrap">
+        <svg class="seal-ring" viewBox="0 0 200 200" aria-hidden="true">
+          <defs>
+            <filter id="sealGlow" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="8"/>
+            </filter>
+          </defs>
+          <ellipse class="ring-glow" cx="100" cy="100" rx="96" ry="94" pathLength="100" filter="url(#sealGlow)"/>
+          <ellipse class="ring-core" cx="100" cy="100" rx="96" ry="94" pathLength="100"/>
+        </svg>
+        <div class="inv-seal">
+          <span class="seal-mono" id="sealMono">R&amp;I</span>
+          <span class="seal-pct" id="loaderPct">0%</span>
+        </div>
+      </div>
+      <p class="inv-date">12 · 12 · 2026</p>
+    </div>
+  </div>
+
+  <!-- ============ FIXED STAGE (video placeholder) ============ -->
+  <div class="stage" id="stage" aria-hidden="true">
+    <div class="sky"></div>
+    <div class="glow" id="glow"></div>
+    <div class="bokeh" id="bokeh"></div>
+    <div class="ring" id="ring"><span class="band"></span><span class="stone"></span></div>
+    <svg class="silhouette" viewBox="0 0 1200 220" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <path d="M0,220 L0,150 Q60,120 80,150 Q95,90 120,150 Q140,110 160,160 L180,150 Q210,100 230,160
+               Q260,120 280,165 L1200,180 L1200,220 Z" fill="#0d0a12"/>
+    </svg>
+    <div class="vignette"></div>
+  </div>
+
+  <!-- ============ THE JOURNEY ============ -->
+  <main class="journey" id="journey">
+
+    <!-- 0 · START -->
+    <section class="station intro" data-station="0" data-task="start" data-side="center">
+      <div class="intro-inner">
+        <h1 class="title big-center">Russel<br><span class="amp">&amp;</span> Ivy</h1>
+        <p class="intro-date">12 · 12 · 2026</p>
+        <div class="scrollcue">↓ slide ke bawah</div>
+      </div>
+    </section>
+
+    <!-- 1 · RING & BLESSING -->
+    <section class="station" data-station="1" data-task="cincin" data-side="left">
+      <div class="card">
+        <h2 class="statement">Dengan cincin ini,<br>perjalanan <span class="mar">kita</span> bermula</h2>
+        <p class="lead">Pertunangan bertema Burgundy &amp; Cream — satu ikatan yang disatukan
+          dalam kasih, doa dan berkat Tuhan.</p>
+        <p class="sub">"Sekarang tinggal tiga perkara ini: iman, pengharapan dan kasih —
+          dan yang terbesar antaranya ialah kasih." <br>&mdash; 1 Korintus 13:13</p>
+        <div class="lodging">
+          <div class="lodge"><strong>Cincin pertunangan</strong><span>tanda janji kasih kami</span></div>
+          <div class="lodge"><strong>Upacara bertukar cincin</strong><span>disaksikan keluarga tersayang</span></div>
+          <div class="lodge"><strong>Doa &amp; berkat</strong><span>restu dan doa kedua-dua keluarga</span></div>
+          <div class="lodge"><strong>Jamuan kasih</strong><span>berkumpul dalam sukacita</span></div>
+        </div>
+        <div class="countdown" id="countdown"></div>
+      </div>
+    </section>
+
+    <!-- 2 · PROGRAMME -->
+    <section class="station" data-station="2" data-task="programme" data-side="right">
+      <div class="card">
+        <h2 class="display">Atur Cara</h2>
+        <ul class="timeline">
+          <li><span class="time">2:00 PTG</span><span class="what"><strong>Ketibaan</strong><span>sambutan tetamu &amp; keluarga</span></span></li>
+          <li><span class="time">2:15 PTG</span><span class="what"><strong>Ucapan alu-aluan</strong><span>ucapan pembukaan</span></span></li>
+          <li><span class="time">2:30 PTG</span><span class="what"><strong>Doa &amp; berkat</strong><span>doa pembukaan &amp; restu keluarga</span></span></li>
+          <li><span class="time">3:00 PTG</span><span class="what"><strong>Pertukaran cincin</strong><span>upacara bertukar cincin pertunangan</span></span></li>
+          <li><span class="time">3:15 PTG</span><span class="what"><strong>Sesi bergambar</strong><span>gambar bersama keluarga</span></span></li>
+          <li><span class="time">3:30 PTG</span><span class="what"><strong>Jamuan</strong><span>jamuan makan &amp; minum</span></span></li>
+          <li><span class="time">4:30 PTG</span><span class="what"><strong>Bersurai</strong><span>tetamu pulang</span></span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 3 · LOCATION / SIGNAGE -->
+    <section class="station" data-station="3" data-task="location" data-side="left">
+      <div class="card">
+        <h2 class="display">Cara ke sana</h2>
+        <p class="address">Rumah Pihak<br>Perempuan</p>
+        <p class="lead">Majlis diadakan di rumah pihak perempuan. Perhatikan papan tanda nama,
+          papan "Happy Engagement" dan papan arah sepanjang jalan — ia akan membawa anda masuk.</p>
+        <a class="btn" href="https://www.google.com/maps/search/?api=1&amp;query=Rumah+Pihak+Perempuan" target="_blank" rel="noopener">Google Maps →</a>
+      </div>
+    </section>
+
+    <!-- 4 · TENT & SEATING -->
+    <section class="station" data-station="4" data-task="setup" data-side="right">
+      <div class="card">
+        <h2 class="display">Susunan &amp;<br><span class="mar">khemah</span></h2>
+        <div class="lodging">
+          <div class="lodge"><strong>Khemah / kanopi</strong><span>teduhan untuk majlis &amp; tetamu</span></div>
+          <div class="lodge"><strong>Meja &amp; kerusi</strong><span>susunan selesa untuk kedua-dua keluarga</span></div>
+          <div class="lodge"><strong>Parkir tetamu</strong><span>ruang khas berhampiran rumah</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 · ATTIRE -->
+    <section class="station" data-station="5" data-task="attire" data-side="left">
+      <div class="card">
+        <h2 class="display">Pakaian</h2>
+        <div class="lodging">
+          <div class="lodge"><strong>Keluarga pihak perempuan</strong><span>warna matcha</span></div>
+          <div class="lodge"><strong>Keluarga pihak lelaki</strong><span>warna cream</span></div>
+          <div class="lodge"><strong>Pasangan tunang</strong><span>warna burgundy sahaja</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 · FOOD & DRINK -->
+    <section class="station" data-station="6" data-task="food" data-side="right">
+      <div class="card">
+        <h2 class="display">Makanan &amp;<br><span class="mar">minuman</span></h2>
+        <div class="lodging">
+          <div class="lodge"><strong>Katering</strong><span>hidangan buffet untuk semua tetamu</span></div>
+          <div class="lodge"><strong>Meja buffet</strong><span>dihidangkan secara santai</span></div>
+          <div class="lodge"><strong>Minuman</strong><span>air mineral, minuman ringan &amp; minuman panas</span></div>
+          <div class="lodge"><strong>Kek / pencuci mulut</strong><span>kek &amp; manisan</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7 · RSVP -->
+    <section class="station" data-station="7" data-task="rsvp" data-side="center">
+      <div class="card finale-card">
+        <h2 class="statement">Sudikah<br><span class="mar">hadir?</span></h2>
+        <p class="lead">Sila maklumkan kehadiran supaya kami dapat merancang makanan dan tempat duduk.</p>
+        <form class="mini-form" data-sheet="rsvp" data-success="Terima kasih! Jawapan anda diterima. 🎉" data-final>
+          <div class="field"><label>Nama anda</label><input type="text" name="name" required placeholder="Siapa anda?" /></div>
+          <div class="radio-row">
+            <span class="radio-pill"><input type="radio" id="ja" name="zusage" value="Hadir" required><label for="ja">Saya akan hadir! 🎉</label></span>
+            <span class="radio-pill"><input type="radio" id="nein" name="zusage" value="Tidak hadir"><label for="nein">Tak dapat hadir</label></span>
+          </div>
+          <div class="field"><label>Berapa orang?</label><input type="number" name="personen" min="0" value="1" /></div>
+          <div class="field"><label>E-mel <span class="opt">(untuk sebarang kemas kini)</span></label><input type="email" name="email" placeholder="supaya kami boleh hubungi anda" /></div>
+          <button class="btn pink big" type="submit">Hantar</button>
+          <p class="form-status"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- 🎉 UCAPAN TERIMA KASIH -->
+    <section class="station" data-station="ziel" data-side="center">
+      <div class="card goal-card" id="goalCard">
+        <h2 class="display">Ucapan<br><span class="mar">terima kasih</span></h2>
+        <p class="lead">Terima kasih kepada semua yang sudi hadir ke majlis pertunangan kami,
+          serta yang mendoakan kami dari dekat mahupun jauh.</p>
+        <p class="sub">Kehadiran, doa dan berkat anda amat kami hargai. Semoga ikatan kasih
+          ini kekal berkekalan serta sentiasa diberkati Tuhan.</p>
+        <p class="secret">— Russel &amp; Ivy</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>12 Disember 2026</p>
+  </footer>
+
+  <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+
+  <script src="vendor/three.min.js"></script>
+  <script src="vendor/RoomEnvironment.js"></script>
+  <script src="vendor/GLTFLoader.js"></script>
+  <script src="ringdata.js"></script>
+  <script src="scenedata.js?v=2"></script>
+  <script src="js/scrolly-video.js?v=5"></script>
+  <script src="v2.js?v=30"></script>
+  <script src="ring3d.js?v=15"></script>
+</body>
+</html>
