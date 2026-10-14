@@ -386,10 +386,10 @@ function initLoader(){
 
   (function tick(){
     const elapsed=Date.now()-started;
-    // Count up for three seconds, then wait for the user's seal click.
-    const shown = Math.min(elapsed/3000*100, 99);
+    // Count up for two seconds, then wait for the user's seal click.
+    const shown = Math.min(elapsed/2000*100, 99);
     setProgress(shown);
-    if(elapsed>=3000 && barReady() && passwordOK){
+    if(elapsed>=2000 && barReady() && passwordOK){
       setProgress(100);
       readyToOpen=true;
       playInvitationMusic();
