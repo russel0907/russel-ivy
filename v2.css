@@ -111,9 +111,11 @@ a, .amp, .mag, .mar, .inv-kicker, .inv-date, .seal-hint,
 
 /* Shared portrait background with a soft overlay for readable text. */
 .scene-backgrounds{
+  inset:-12px;
   background:linear-gradient(rgba(28,10,18,.22),rgba(28,10,18,.38)),
     url("images/bg.png") center center / cover no-repeat;
   background-color:#3d1220;
+  filter:blur(4px);
 }
 .scene-bg,.stage .vignette{ display:none; }
 .stage .vignette{ position:absolute; inset:0; pointer-events:none; z-index:4;
@@ -323,6 +325,7 @@ html:not(.js) #loader{ display:none; }   /* ohne JS keinen Loader */
   transition:transform .2s, box-shadow .2s, background .2s; }
 .btn:hover{ transform:translateY(-2px); box-shadow:0 10px 26px rgba(0,0,0,.4); }
 .btn.pink{ --bg:var(--mag); --fg:#fff; }
+.btn.maps{ --bg:var(--cream); --fg:#7a1f3d; }
 .btn.ghost{ --bg:transparent; --fg:var(--cream); border:2px solid var(--glass-line); }
 .btn.big{ padding:16px 32px; font-size:1.05rem; }
 /* CTA-Buttons sollen nicht direkt am Text darüber kleben */
